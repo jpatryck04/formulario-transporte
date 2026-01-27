@@ -1,0 +1,274 @@
+<div class="formulario-container">
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="requisicion-form">
+    
+    <!-- Encabezado del formulario -->
+    <div class="encabezado">
+      <div class="titulo-principal">
+        <h1>FORM. DAF-ST-001</h1>
+        <h2>ENDE 04</h2>
+      </div>
+      <div class="gobierno">
+        <h3>GOBIERNO DE LA</h3>
+        <h3>REPÚBLICA DOMINICANA</h3>
+        <h4>SALUD PÚBLICA</h4>
+      </div>
+      <div class="direccion">
+        <p>DIRECCIÓN ADMINISTRATIVA Y FINANCIERA</p>
+        <p>Departamento Administrativo</p>
+        <h3 class="titulo-form">REQUISICIÓN DE SERVICIOS DE TRANSPORTACIÓN</h3>
+      </div>
+    </div>
+
+    <!-- Primera sección: Datos básicos -->
+    <div class="seccion">
+      <div class="fila">
+        <div class="campo">
+          <label>FECHA:</label>
+          <input type="date" formControlName="fecha">
+        </div>
+        <div class="campo">
+          <label>HORA:</label>
+          <input type="time" formControlName="hora">
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>DEPENDENCIA SOLICITANTE:</label>
+        <input type="text" formControlName="dependencia" placeholder="Nombre de la dependencia">
+      </div>
+    </div>
+
+    <!-- Sección de datos del vehículo -->
+    <div class="seccion">
+      <h4>DATOS DEL VEHÍCULO:</h4>
+      <div class="fila">
+        <div class="campo">
+          <label>FICHA:</label>
+          <input type="text" formControlName="ficha">
+        </div>
+        <div class="campo">
+          <label>PLACA:</label>
+          <input type="text" formControlName="placa">
+        </div>
+      </div>
+      
+      <div class="fila">
+        <div class="campo">
+          <label>MARCA:</label>
+          <input type="text" formControlName="marca">
+        </div>
+        <div class="campo">
+          <label>MODELO:</label>
+          <input type="text" formControlName="modelo">
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="campo">
+          <label>AÑO:</label>
+          <input type="number" formControlName="anio">
+        </div>
+        <div class="campo">
+          <label>CHASSIS NO.:</label>
+          <input type="text" formControlName="chassis">
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>CONDUCTOR:</label>
+        <input type="text" formControlName="conductor">
+      </div>
+    </div>
+
+    <!-- Sección de combustible -->
+    <div class="seccion combustible">
+      <h4>INSUMO O SERVICIO SOLICITADO:</h4>
+      <h5>1- COMBUSTIBLE:</h5>
+      
+      <div class="opciones-checkbox">
+        <label>
+          <input type="checkbox" formControlName="gasolina"> GASOLINA
+        </label>
+        <label>
+          <input type="checkbox" formControlName="gasOil"> GAS OIL
+        </label>
+      </div>
+
+      <div class="fila">
+        <div class="campo">
+          <label>VALOR SOLICITADO:</label>
+          <input type="number" formControlName="valorSolicitado" step="0.01">
+        </div>
+        <div class="campo">
+          <label>GALONES:</label>
+          <input type="number" formControlName="galones" step="0.01">
+        </div>
+        <div class="campo">
+          <label>DOP:</label>
+          <input type="number" formControlName="dop" step="0.01">
+        </div>
+      </div>
+
+      <div class="opciones-radio">
+        <label>INCLUIDO EN:</label>
+        <label>
+          <input type="radio" formControlName="incluidoEn" value="asignacion"> ASIGNACIÓN
+        </label>
+        <label>
+          <input type="radio" formControlName="incluidoEn" value="planTrabajo"> PLAN DE TRABAJO
+        </label>
+      </div>
+    </div>
+
+    <!-- Mantenimiento rutinario -->
+    <div class="seccion">
+      <h5>2- MANTENIMIENTO RUTINARIO:</h5>
+      <textarea formControlName="mantenimientoRutinario" rows="3"></textarea>
+    </div>
+
+    <!-- Sustitución de goma/batería -->
+    <div class="seccion">
+      <h5>3- SUSTITUCIÓN DE GOMA/S BATTERÍA CAPACIDAD:</h5>
+      <input type="text" formControlName="sustitucion" class="campo-ancho">
+    </div>
+
+    <!-- Reparación -->
+    <div class="seccion">
+      <h5>4- REPARACIÓN DE</h5>
+      <input type="text" formControlName="reparacion" class="campo-ancho">
+    </div>
+
+    <!-- Tipo de vehículo -->
+    <div class="seccion">
+      <h5>5- VEHÍCULO DE PASAJEROS:</h5>
+      <div class="opciones-checkbox">
+        <label>
+          <input type="checkbox" formControlName="carga"> CARGA
+        </label>
+        <label>
+          <input type="checkbox" formControlName="ambulancia"> AMBULANCIA
+        </label>
+      </div>
+
+      <div class="fila">
+        <div class="campo">
+          <label>FECHA RECEPCIÓN DE VEHÍCULO:</label>
+          <input type="date" formControlName="fechaRecepcion">
+        </div>
+        <div class="campo">
+          <label>POR:</label>
+          <input type="text" formControlName="recepcionPor">
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="campo">
+          <label>FECHA DEVOLUCIÓN DE VEHÍCULO:</label>
+          <input type="date" formControlName="fechaDevolucion">
+        </div>
+        <div class="campo">
+          <label>POR:</label>
+          <input type="text" formControlName="devolucionPor">
+        </div>
+      </div>
+    </div>
+
+    <!-- Transporte de pasajeros -->
+    <div class="seccion">
+      <h5>6- TRANSPORTE PARA ______ PASAJERO/S CANTIDAD:</h5>
+      <div class="fila">
+        <input type="number" formControlName="cantidadPasajeros" placeholder="Cantidad">
+      </div>
+    </div>
+
+    <!-- Detalles del viaje -->
+    <div class="seccion">
+      <div class="campo">
+        <label>LUGAR/ES A VISITAR:</label>
+        <textarea formControlName="lugaresVisitar" rows="2"></textarea>
+      </div>
+      
+      <div class="campo">
+        <label>ACTIVIDAD A REALIZAR:</label>
+        <textarea formControlName="actividadRealizar" rows="2"></textarea>
+      </div>
+      
+      <div class="campo">
+        <label>FECHA DEL VIAJE:</label>
+        <input type="date" formControlName="fechaViaje">
+      </div>
+    </div>
+
+    <!-- Observaciones -->
+    <div class="seccion">
+      <label>OBSERVACIONES:</label>
+      <textarea formControlName="observaciones" rows="4"></textarea>
+    </div>
+
+    <!-- Firmas y responsabilidades -->
+    <div class="seccion firmas">
+      <div class="fila">
+        <div class="campo">
+          <label>RESPONSABLE DEPENDENCIA:</label>
+          <input type="text" formControlName="responsableDependencia">
+        </div>
+        <div class="campo">
+          <label>NOMBRE:</label>
+          <input type="text" formControlName="nombreResponsable">
+        </div>
+      </div>
+      
+      <div class="fila">
+        <div class="campo">
+          <label>DIRECTOR(A) ADMINISTRATIVO:</label>
+          <input type="text" formControlName="directorAdministrativo">
+        </div>
+        <div class="campo">
+          <label>CARGO:</label>
+          <input type="text" formControlName="cargo">
+        </div>
+      </div>
+      
+      <!-- Firmas digitales (idea innovadora) -->
+      <div class="firmas-digitales">
+        <h4>FIRMAS DIGITALES</h4>
+        <div class="firma-area">
+          <label>Firma del responsable:</label>
+          <canvas #firmaResponsable width="300" height="100" class="canvas-firma"></canvas>
+          <button type="button" (click)="limpiarFirma('responsable')">Limpiar</button>
+        </div>
+        
+        <div class="firma-area">
+          <label>Firma del director:</label>
+          <canvas #firmaDirector width="300" height="100" class="canvas-firma"></canvas>
+          <button type="button" (click)="limpiarFirma('director')">Limpiar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advertencia -->
+    <div class="advertencia">
+      <p>NO ES VALIDO SI PRESENTA TACHADURA, BORRADURA O ALGÚN TIPO DE ALTERACIÓN O SI FALTA ALGUNA FIRMA O SELLO</p>
+      <p>COPIA 1 CRONOLÓGICO | COPIA 2 SOLICITANTE</p>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="botones-accion">
+      <button type="submit" class="btn-guardar">GUARDAR REQUISICIÓN</button>
+      <button type="button" class="btn-imprimir" (click)="imprimirFormulario()">IMPRIMIR</button>
+      <button type="button" class="btn-pdf" (click)="generarPDF()">GENERAR PDF</button>
+      <button type="button" class="btn-limpiar" (click)="limpiarFormulario()">LIMPIAR FORMULARIO</button>
+    </div>
+
+  </form>
+
+  <!-- Vista previa (idea innovadora) -->
+  <div class="vista-previa" *ngIf="mostrarVistaPrevia">
+    <h3>Vista Previa</h3>
+    <div class="previa-contenido">
+      <p><strong>Dependencia:</strong> {{ formulario.value.dependencia }}</p>
+      <p><strong>Vehículo:</strong> {{ formulario.value.marca }} {{ formulario.value.modelo }}</p>
+      <p><strong>Estado:</strong> {{ estadoFormulario }}</p>
+    </div>
+  </div>
+</div>
