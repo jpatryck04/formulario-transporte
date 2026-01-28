@@ -187,7 +187,7 @@
 }
 
 .btn-imprimir {
-  background-color: #3498db;
+  background-color: #3498db;  
   color: white;
 }
 
@@ -273,4 +273,361 @@ textarea.ng-invalid.ng-touched {
   .canvas-firma {
     border: 1px solid #000;
   }
+}
+
+
+.logo-container {
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+}
+
+.logo-gobierno {
+  max-width: 200px;
+  max-height: 100px;
+  object-fit: contain;
+}
+
+.info-entrada {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 15px auto;
+  max-width: 600px;
+}
+
+.entrada-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #ced4da;
+}
+
+.entrada-fila:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.entrada-label {
+  font-weight: bold;
+  color: #495057;
+  font-size: 14px;
+}
+
+.entrada-valor {
+  color: #212529;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.entrada-input {
+  border: none;
+  border-bottom: 1px solid #6c757d;
+  background: transparent;
+  width: 200px;
+  padding: 2px 5px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.entrada-input:focus {
+  outline: none;
+  border-bottom-color: #3498db;
+}
+
+/* Si el logo no carga, mostrar texto alternativo */
+.logo-container::before {
+  content: attr(data-alt);
+  display: none;
+  font-size: 12px;
+  color: #666;
+}
+
+.logo-container:has(img[src=""])::before {
+  display: block;
+}
+
+/* Media queries para el logo */
+@media (max-width: 768px) {
+  .logo-gobierno {
+    max-width: 150px;
+  }
+  
+  .entrada-input {
+    width: 150px;
+  }
+}
+
+@media print {
+  .logo-gobierno {
+    max-width: 150px;
+    filter: grayscale(100%);
+  }
+}
+
+/* =========================================== */
+/* ESTILOS ESPECÍFICOS PARA IMPRESIÓN */
+/* =========================================== */
+
+/* Ocultar todo excepto la vista de impresión cuando se imprime */
+@media print {
+  /* Ocultar la vista normal */
+  .requisicion-form {
+    display: none !important;
+  }
+  
+  /* Mostrar la vista de impresión */
+  .vista-impresion {
+    display: block !important;
+  }
+  
+  /* Estilos generales para impresión */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', serif;
+    color: #000;
+    background: white !important;
+  }
+  
+  .formulario-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0.5in !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+  }
+  
+  /* Encabezado de impresión */
+  .impresion-encabezado {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 15px;
+  }
+  
+  .impresion-titulo-principal h1 {
+    font-size: 18pt;
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  .impresion-titulo-principal h2 {
+    font-size: 14pt;
+    margin: 5px 0 15px 0;
+    font-weight: normal;
+  }
+  
+  .logo-impresion {
+    max-width: 150px;
+    max-height: 80px;
+    margin: 10px auto;
+  }
+  
+  .impresion-info-entrada {
+    margin: 15px 0;
+    font-size: 11pt;
+  }
+  
+  .impresion-fila {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+  
+  .impresion-label {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  
+  .impresion-valor {
+    border-bottom: 1px solid #000;
+    min-width: 150px;
+    text-align: center;
+  }
+  
+  .impresion-direccion {
+    margin-top: 15px;
+  }
+  
+  .impresion-direccion p {
+    margin: 3px 0;
+    font-size: 11pt;
+  }
+  
+  .impresion-titulo-form {
+    font-size: 16pt;
+    margin: 10px 0;
+    text-decoration: underline;
+  }
+  
+  /* Secciones */
+  .impresion-seccion {
+    margin: 15px 0;
+    page-break-inside: avoid;
+  }
+  
+  .impresion-subtitulo {
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 10px 0 5px 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 3px;
+  }
+  
+  .impresion-subsubtitulo {
+    font-size: 11pt;
+    font-weight: bold;
+    margin: 8px 0 5px 0;
+  }
+  
+  .impresion-fila-datos {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+  }
+  
+  .impresion-campo {
+    flex: 1;
+    margin: 0 10px;
+  }
+  
+  .impresion-campo-completo {
+    margin: 8px 0;
+  }
+  
+  .impresion-dato {
+    border-bottom: 1px solid #000;
+    padding: 2px 5px;
+    min-width: 150px;
+    display: inline-block;
+  }
+  
+  .impresion-texto {
+    border-bottom: 1px solid #000;
+    padding: 5px;
+    min-height: 20px;
+    margin-top: 5px;
+  }
+  
+  .impresion-texto-grande {
+    border: 1px solid #ccc;
+    padding: 8px;
+    min-height: 40px;
+    margin-top: 5px;
+    font-size: 10pt;
+  }
+  
+  /* Líneas para pasajeros - ESTILO ESPECIAL */
+  .linea-pasajeros {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    margin: 0 5px;
+  }
+  
+  /* Opciones (checkboxes) */
+  .impresion-opciones {
+    margin: 8px 0;
+  }
+  
+  /* Firmas */
+  .firmas-impresion {
+    margin-top: 30px;
+  }
+  
+  .impresion-firmas {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+  }
+  
+  .impresion-firma {
+    text-align: center;
+    width: 40%;
+  }
+  
+  .impresion-linea-firma {
+    border-top: 1px solid #000;
+    margin: 40px 0 5px 0;
+    width: 100%;
+  }
+  
+  .impresion-label-firma {
+    font-size: 10pt;
+    font-style: italic;
+  }
+  
+  /* Advertencia */
+  .impresion-advertencia {
+    margin-top: 30px;
+    padding: 10px;
+    border: 1px solid #000;
+    font-size: 9pt;
+    text-align: center;
+    page-break-inside: avoid;
+  }
+  
+  .impresion-advertencia p {
+    margin: 3px 0;
+  }
+  
+  /* Footer */
+  .impresion-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 9pt;
+    color: #666;
+    font-style: italic;
+  }
+  
+  /* Ocultar elementos no deseados */
+  .botones-accion,
+  .vista-previa,
+  .canvas-firma,
+  button,
+  input,
+  textarea,
+  select {
+    display: none !important;
+  }
+}
+
+/* Estilos para la vista de impresión en pantalla */
+.vista-impresion {
+  display: none;
+  background: white;
+  padding: 20px;
+}
+
+/* Estilos cuando está activo el modo impresión (para previsualización) */
+.modo-impresion-activo .vista-impresion {
+  display: block;
+}
+
+.modo-impresion-activo .requisicion-form {
+  display: none;
+}
+
+/* Estilos especiales para la línea de pasajeros en pantalla */
+.linea-pasajeros {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  color: #333;
+  margin: 0 5px;
+}
+
+/* Botón de impresión en la vista normal */
+.btn-imprimir {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.btn-imprimir:hover {
+  background-color: #1a252f;
 }

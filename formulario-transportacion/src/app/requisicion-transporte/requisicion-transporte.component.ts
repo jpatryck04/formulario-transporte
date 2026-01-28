@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 
@@ -16,16 +16,38 @@ export class RequisicionTransporteComponent implements OnInit {
   formulario!: FormGroup;
   mostrarVistaPrevia = false;
   estadoFormulario = 'Pendiente';
+  modoImpresion = false;
+  lineasPasajeros = '';
+  
+  numeroEntrada = this.generarNumeroEntrada();
+  fechaActual = new Date().toLocaleDateString();
+  horaActual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  fechaImpresion = '';
+  horaImpresion = '';
   
   private ctxResponsable: CanvasRenderingContext2D | null = null;
   private ctxDirector: CanvasRenderingContext2D | null = null;
   private isDrawing = false;
   private currentCtx: CanvasRenderingContext2D | null = null;
   
+  // Escuchar Ctrl+P
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+      event.preventDefault();
+      this.imprimirFormulario();
+    }
+  }
+  
   constructor(private fb: FormBuilder) { }
   
   ngOnInit(): void {
     this.inicializarFormulario();
+    
+    // Escuchar cambios en la cantidad de pasajeros para actualizar las líneas
+    this.formulario.get('cantidadPasajeros')?.valueChanges.subscribe((valor) => {
+      this.actualizarLineasPasajeros(valor);
+    });
   }
   
   ngAfterViewInit(): void {
@@ -38,6 +60,7 @@ export class RequisicionTransporteComponent implements OnInit {
       fecha: ['', Validators.required],
       hora: ['', Validators.required],
       dependencia: ['', Validators.required],
+      registradoPor: ['', Validators.required],
       
       // Datos del vehículo
       ficha: [''],
@@ -86,6 +109,73 @@ export class RequisicionTransporteComponent implements OnInit {
       directorAdministrativo: ['', Validators.required],
       cargo: ['']
     });
+  }
+  
+  // Método para actualizar líneas según cantidad de pasajeros (para vista normal)
+  actualizarLineasPasajeros(cantidad: number): void {
+    if (!cantidad || cantidad <= 0) {
+      this.lineasPasajeros = '______';
+      return;
+    }
+    
+    // Crear una línea por cada pasajero
+    let lineas = '';
+    for (let i = 0; i < cantidad; i++) {
+      lineas += '______';
+      if (i < cantidad - 1) lineas += ' ';
+    }
+    this.lineasPasajeros = lineas;
+  }
+  
+  // Método para generar líneas según cantidad de pasajeros (para vista impresión)
+  generarLineasPasajeros(): string {
+    const cantidad = this.formulario.value.cantidadPasajeros;
+    if (!cantidad || cantidad <= 0) return '______';
+    
+    // Crear una línea por cada pasajero
+    let lineas = '';
+    for (let i = 0; i < cantidad; i++) {
+      lineas += '______';
+      if (i < cantidad - 1) lineas += ' ';
+    }
+    return lineas;
+  }
+  
+  // Este método también puede ser usado como alias (corrige el error)
+  generarLineasPasajerosImpresion(): string {
+    return this.generarLineasPasajeros();
+  }
+  
+  // Método mejorado para imprimir
+  imprimirFormulario(): void {
+    if (!this.formulario.valid) {
+      alert('Complete todos los campos requeridos antes de imprimir');
+      return;
+    }
+    
+    // Actualizar fecha y hora de impresión
+    const ahora = new Date();
+    this.fechaImpresion = ahora.toLocaleDateString();
+    this.horaImpresion = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    // Activar modo impresión
+    this.modoImpresion = true;
+    
+    // Esperar un momento para que se renderice la vista de impresión
+    setTimeout(() => {
+      // Abrir el diálogo de impresión
+      window.print();
+      
+      // Volver al modo normal después de imprimir
+      setTimeout(() => {
+        this.modoImpresion = false;
+      }, 100);
+    }, 100);
+  }
+  
+  // También se puede llamar desde el botón
+  onImprimirClick(): void {
+    this.imprimirFormulario();
   }
   
   inicializarCanvas(): void {
@@ -246,10 +336,6 @@ export class RequisicionTransporteComponent implements OnInit {
     });
   }
   
-  imprimirFormulario(): void {
-    window.print();
-  }
-  
   generarPDF(): void {
     // Implementación básica - puedes expandir con jsPDF más tarde
     const contenido = `
@@ -279,6 +365,7 @@ export class RequisicionTransporteComponent implements OnInit {
       this.limpiarFirma('director');
       this.mostrarVistaPrevia = false;
       this.estadoFormulario = 'Pendiente';
+      this.lineasPasajeros = '';
     }
   }
   
@@ -288,6 +375,7 @@ export class RequisicionTransporteComponent implements OnInit {
       fecha: new Date().toISOString().split('T')[0],
       hora: '14:30',
       dependencia: 'Departamento de Salud Pública',
+      registradoPor: 'Juan Pérez',
       placa: 'ABC-1234',
       marca: 'Toyota',
       modelo: 'Hilux',
@@ -299,7 +387,18 @@ export class RequisicionTransporteComponent implements OnInit {
       responsableDependencia: 'María García',
       nombreResponsable: 'María García',
       directorAdministrativo: 'Carlos Rodríguez',
-      cargo: 'Jefe de Departamento'
+      cargo: 'Jefe de Departamento',
+      cantidadPasajeros: 3
     });
+    
+    // Actualizar líneas de pasajeros
+    this.actualizarLineasPasajeros(3);
+  }
+  
+  generarNumeroEntrada(): string {
+    const ultimoNumero = localStorage.getItem('ultimoNumeroEntrada') || '0';
+    const nuevoNumero = parseInt(ultimoNumero) + 1;
+    localStorage.setItem('ultimoNumeroEntrada', nuevoNumero.toString());
+    return `ENTR-${nuevoNumero.toString().padStart(4, '0')}`;
   }
 }

@@ -1,17 +1,37 @@
 <div class="formulario-container">
-  <form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="requisicion-form">
-    
+  <!-- Vista normal para edición -->
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="requisicion-form" *ngIf="!modoImpresion">
     <!-- Encabezado del formulario -->
     <div class="encabezado">
       <div class="titulo-principal">
         <h1>FORM. DAF-ST-001</h1>
-        <h2>ENDE 04</h2>
+        <h2>EN/EM</h2>
       </div>
-      <div class="gobierno">
-        <h3>GOBIERNO DE LA</h3>
-        <h3>REPÚBLICA DOMINICANA</h3>
-        <h4>SALUD PÚBLICA</h4>
+      
+      <!-- Logo en lugar de texto -->
+      <div class="logo-container">
+        <img src="assets/logo-gobierno.png" alt="Logo Gobierno República Dominicana" class="logo-gobierno">
       </div>
+      
+      <div class="info-entrada">
+        <div class="entrada-fila">
+          <span class="entrada-label">No. DE ENTRADA</span>
+          <span class="entrada-valor">{{ numeroEntrada }}</span>
+        </div>
+        <div class="entrada-fila">
+          <span class="entrada-label">FECHA:</span>
+          <span class="entrada-valor">{{ fechaActual }}</span>
+        </div>
+        <div class="entrada-fila">
+          <span class="entrada-label">HORA:</span>
+          <span class="entrada-valor">{{ horaActual }}</span>
+        </div>
+        <div class="entrada-fila">
+          <span class="entrada-label">POR:</span>
+          <input type="text" formControlName="registradoPor" class="entrada-input">
+        </div>
+      </div>
+      
       <div class="direccion">
         <p>DIRECCIÓN ADMINISTRATIVA Y FINANCIERA</p>
         <p>Departamento Administrativo</p>
@@ -175,9 +195,17 @@
 
     <!-- Transporte de pasajeros -->
     <div class="seccion">
-      <h5>6- TRANSPORTE PARA ______ PASAJERO/S CANTIDAD:</h5>
+      <h5>6- TRANSPORTE PARA 
+        <span class="linea-contador" *ngIf="formulario.value.cantidadPasajeros">
+          {{ generarLineasPasajeros() }}
+        </span>
+        <span class="linea-contador" *ngIf="!formulario.value.cantidadPasajeros">
+          ______
+        </span>
+        PASAJERO/S CANTIDAD:
+      </h5>
       <div class="fila">
-        <input type="number" formControlName="cantidadPasajeros" placeholder="Cantidad">
+        <input type="number" formControlName="cantidadPasajeros" placeholder="Cantidad" min="0" (input)="actualizarLineasPasajeros(formulario.value.cantidadPasajeros)">
       </div>
     </div>
 
@@ -229,7 +257,7 @@
         </div>
       </div>
       
-      <!-- Firmas digitales (idea innovadora) -->
+      <!-- Firmas digitales -->
       <div class="firmas-digitales">
         <h4>FIRMAS DIGITALES</h4>
         <div class="firma-area">
@@ -255,19 +283,312 @@
     <!-- Botones de acción -->
     <div class="botones-accion">
       <button type="submit" class="btn-guardar">GUARDAR REQUISICIÓN</button>
-      <button type="button" class="btn-imprimir" (click)="imprimirFormulario()">IMPRIMIR</button>
+      <button type="button" class="btn-imprimir" (click)="onImprimirClick()">IMPRIMIR</button>
       <button type="button" class="btn-pdf" (click)="generarPDF()">GENERAR PDF</button>
       <button type="button" class="btn-limpiar" (click)="limpiarFormulario()">LIMPIAR FORMULARIO</button>
+      <button type="button" class="btn-ejemplo" (click)="autocompletarEjemplo()">EJEMPLO</button>
     </div>
-
   </form>
 
-  <!-- Vista previa (idea innovadora) -->
-  <div class="vista-previa" *ngIf="mostrarVistaPrevia">
+  <!-- Vista para impresión -->
+  <div class="vista-impresion" *ngIf="modoImpresion">
+    <div class="impresion-encabezado">
+      <div class="impresion-titulo-principal">
+        <h1>FORM. DAF-ST-001</h1>
+        <h2>EN/EM</h2>
+      </div>
+      
+      <!-- Logo -->
+      <div class="impresion-logo">
+        <img src="assets/logo-gobierno.png" alt="Logo Gobierno" class="logo-impresion">
+      </div>
+      
+      <div class="impresion-info-entrada">
+        <div class="impresion-fila">
+          <span class="impresion-label">No. DE ENTRADA:</span>
+          <span class="impresion-valor">{{ numeroEntrada }}</span>
+        </div>
+        <div class="impresion-fila">
+          <span class="impresion-label">FECHA:</span>
+          <span class="impresion-valor">{{ fechaActual }}</span>
+        </div>
+        <div class="impresion-fila">
+          <span class="impresion-label">HORA:</span>
+          <span class="impresion-valor">{{ horaActual }}</span>
+        </div>
+        <div class="impresion-fila">
+          <span class="impresion-label">POR:</span>
+          <span class="impresion-valor">{{ formulario.value.registradoPor || '____________________' }}</span>
+        </div>
+      </div>
+      
+      <div class="impresion-direccion">
+        <p>DIRECCIÓN ADMINISTRATIVA Y FINANCIERA</p>
+        <p>Departamento Administrativo</p>
+        <h3 class="impresion-titulo-form">REQUISICIÓN DE SERVICIOS DE TRANSPORTACIÓN</h3>
+      </div>
+    </div>
+
+    <!-- Sección de datos básicos -->
+    <div class="impresion-seccion">
+      <div class="impresion-fila-datos">
+        <div class="impresion-campo">
+          <span class="impresion-label">FECHA:</span>
+          <span class="impresion-dato">{{ formulario.value.fecha || '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">HORA:</span>
+          <span class="impresion-dato">{{ formulario.value.hora || '____________________' }}</span>
+        </div>
+      </div>
+      
+      <div class="impresion-campo-completo">
+        <span class="impresion-label">DEPENDENCIA SOLICITANTE:</span>
+        <span class="impresion-dato">{{ formulario.value.dependencia || '____________________' }}</span>
+      </div>
+    </div>
+
+    <!-- Datos del vehículo -->
+    <div class="impresion-seccion">
+      <h4 class="impresion-subtitulo">DATOS DEL VEHÍCULO:</h4>
+      
+      <div class="impresion-fila-datos">
+        <div class="impresion-campo">
+          <span class="impresion-label">FICHA:</span>
+          <span class="impresion-dato">{{ formulario.value.ficha || '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">PLACA:</span>
+          <span class="impresion-dato">{{ formulario.value.placa || '____________________' }}</span>
+        </div>
+      </div>
+      
+      <div class="impresion-fila-datos">
+        <div class="impresion-campo">
+          <span class="impresion-label">MARCA:</span>
+          <span class="impresion-dato">{{ formulario.value.marca || '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">MODELO:</span>
+          <span class="impresion-dato">{{ formulario.value.modelo || '____________________' }}</span>
+        </div>
+      </div>
+      
+      <div class="impresion-fila-datos">
+        <div class="impresion-campo">
+          <span class="impresion-label">AÑO:</span>
+          <span class="impresion-dato">{{ formulario.value.anio || '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">CHASSIS NO.:</span>
+          <span class="impresion-dato">{{ formulario.value.chassis || '____________________' }}</span>
+        </div>
+      </div>
+      
+      <div class="impresion-campo-completo">
+        <span class="impresion-label">CONDUCTOR:</span>
+        <span class="impresion-dato">{{ formulario.value.conductor || '____________________' }}</span>
+      </div>
+    </div>
+
+    <!-- Combustible -->
+    <div class="impresion-seccion combustible-impresion">
+      <h4 class="impresion-subtitulo">INSUMO O SERVICIO SOLICITADO:</h4>
+      <h5 class="impresion-subsubtitulo">1- COMBUSTIBLE:</h5>
+      
+      <div class="impresion-opciones">
+        <span class="impresion-label">TIPO:</span>
+        <span class="impresion-dato">
+          <span *ngIf="formulario.value.gasolina">✓ GASOLINA</span>
+          <span *ngIf="formulario.value.gasOil">✓ GAS OIL</span>
+          <span *ngIf="!formulario.value.gasolina && !formulario.value.gasOil">____________________</span>
+        </span>
+      </div>
+      
+      <div class="impresion-fila-datos">
+        <div class="impresion-campo">
+          <span class="impresion-label">VALOR SOLICITADO:</span>
+          <span class="impresion-dato">{{ formulario.value.valorSolicitado ? ('$' + formulario.value.valorSolicitado) : '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">GALONES:</span>
+          <span class="impresion-dato">{{ formulario.value.galones || '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">DOP:</span>
+          <span class="impresion-dato">{{ formulario.value.dop ? ('$' + formulario.value.dop) : '____________________' }}</span>
+        </div>
+      </div>
+      
+      <div class="impresion-opciones">
+        <span class="impresion-label">INCLUIDO EN:</span>
+        <span class="impresion-dato">
+          <span *ngIf="formulario.value.incluidoEn === 'asignacion'">✓ ASIGNACIÓN</span>
+          <span *ngIf="formulario.value.incluidoEn === 'planTrabajo'">✓ PLAN DE TRABAJO</span>
+          <span *ngIf="!formulario.value.incluidoEn">____________________</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Mantenimiento -->
+    <div class="impresion-seccion">
+      <h5 class="impresion-subsubtitulo">2- MANTENIMIENTO RUTINARIO:</h5>
+      <div class="impresion-texto">
+        {{ formulario.value.mantenimientoRutinario || '________________________________________________________________________' }}
+      </div>
+    </div>
+
+    <!-- Sustitución -->
+    <div class="impresion-seccion">
+      <h5 class="impresion-subsubtitulo">3- SUSTITUCIÓN DE GOMA/S BATTERÍA CAPACIDAD:</h5>
+      <div class="impresion-texto">
+        {{ formulario.value.sustitucion || '________________________________________________________________________' }}
+      </div>
+    </div>
+
+    <!-- Reparación -->
+    <div class="impresion-seccion">
+      <h5 class="impresion-subsubtitulo">4- REPARACIÓN DE</h5>
+      <div class="impresion-texto">
+        {{ formulario.value.reparacion || '________________________________________________________________________' }}
+      </div>
+    </div>
+
+    <!-- Tipo de vehículo -->
+    <div class="impresion-seccion">
+      <h5 class="impresion-subsubtitulo">5- VEHÍCULO DE PASAJEROS:</h5>
+      
+      <div class="impresion-opciones">
+        <span class="impresion-label">TIPO:</span>
+        <span class="impresion-dato">
+          <span *ngIf="formulario.value.carga">✓ CARGA</span>
+          <span *ngIf="formulario.value.ambulancia">✓ AMBULANCIA</span>
+          <span *ngIf="!formulario.value.carga && !formulario.value.ambulancia">____________________</span>
+        </span>
+      </div>
+      
+      <div class="impresion-fila-datos">
+        <div class="impresion-campo">
+          <span class="impresion-label">FECHA RECEPCIÓN:</span>
+          <span class="impresion-dato">{{ formulario.value.fechaRecepcion || '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">POR:</span>
+          <span class="impresion-dato">{{ formulario.value.recepcionPor || '____________________' }}</span>
+        </div>
+      </div>
+      
+      <div class="impresion-fila-datos">
+        <div class="impresion-campo">
+          <span class="impresion-label">FECHA DEVOLUCIÓN:</span>
+          <span class="impresion-dato">{{ formulario.value.fechaDevolucion || '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">POR:</span>
+          <span class="impresion-dato">{{ formulario.value.devolucionPor || '____________________' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transporte de pasajeros - CON LAS LÍNEAS DINÁMICAS -->
+    <div class="impresion-seccion">
+      <h5 class="impresion-subsubtitulo">
+        6- TRANSPORTE PARA 
+        <span class="linea-pasajeros">
+          {{ generarLineasPasajerosImpresion() }}
+        </span>
+        PASAJERO/S CANTIDAD: {{ formulario.value.cantidadPasajeros || '____' }}
+      </h5>
+    </div>
+
+    <!-- Detalles del viaje -->
+    <div class="impresion-seccion">
+      <div class="impresion-campo-completo">
+        <span class="impresion-label">LUGAR/ES A VISITAR:</span>
+        <div class="impresion-texto">
+          {{ formulario.value.lugaresVisitar || '________________________________________________________________________' }}
+        </div>
+      </div>
+      
+      <div class="impresion-campo-completo">
+        <span class="impresion-label">ACTIVIDAD A REALIZAR:</span>
+        <div class="impresion-texto">
+          {{ formulario.value.actividadRealizar || '________________________________________________________________________' }}
+        </div>
+      </div>
+      
+      <div class="impresion-campo-completo">
+        <span class="impresion-label">FECHA DEL VIAJE:</span>
+        <span class="impresion-dato">{{ formulario.value.fechaViaje || '____________________' }}</span>
+      </div>
+    </div>
+
+    <!-- Observaciones -->
+    <div class="impresion-seccion">
+      <span class="impresion-label">OBSERVACIONES:</span>
+      <div class="impresion-texto-grande">
+        {{ formulario.value.observaciones || '________________________________________________________________________' }}
+      </div>
+    </div>
+
+    <!-- Firmas -->
+    <div class="impresion-seccion firmas-impresion">
+      <div class="impresion-fila-datos">
+        <div class="impresion-campo">
+          <span class="impresion-label">RESPONSABLE DEPENDENCIA:</span>
+          <span class="impresion-dato">{{ formulario.value.responsableDependencia || '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">NOMBRE:</span>
+          <span class="impresion-dato">{{ formulario.value.nombreResponsable || '____________________' }}</span>
+        </div>
+      </div>
+      
+      <div class="impresion-fila-datos">
+        <div class="impresion-campo">
+          <span class="impresion-label">DIRECTOR(A) ADMINISTRATIVO:</span>
+          <span class="impresion-dato">{{ formulario.value.directorAdministrativo || '____________________' }}</span>
+        </div>
+        <div class="impresion-campo">
+          <span class="impresion-label">CARGO:</span>
+          <span class="impresion-dato">{{ formulario.value.cargo || '____________________' }}</span>
+        </div>
+      </div>
+      
+      <!-- Firmas digitales en impresión -->
+      <div class="impresion-firmas">
+        <div class="impresion-firma">
+          <div class="impresion-linea-firma"></div>
+          <span class="impresion-label-firma">Firma del Responsable</span>
+        </div>
+        
+        <div class="impresion-firma">
+          <div class="impresion-linea-firma"></div>
+          <span class="impresion-label-firma">Firma del Director Administrativo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advertencia -->
+    <div class="impresion-advertencia">
+      <p>NO ES VALIDO SI PRESENTA TACHADURA, BORRADURA O ALGÚN TIPO DE ALTERACIÓN O SI FALTA ALGUNA FIRMA O SELLO</p>
+      <p>COPIA 1 CRONOLÓGICO | COPIA 2 SOLICITANTE</p>
+    </div>
+    
+    <!-- Fecha y hora de impresión -->
+    <div class="impresion-footer">
+      <p>Impreso el: {{ fechaImpresion }} a las {{ horaImpresion }}</p>
+    </div>
+  </div>
+
+  <!-- Vista previa (solo en modo edición) -->
+  <div class="vista-previa" *ngIf="mostrarVistaPrevia && !modoImpresion">
     <h3>Vista Previa</h3>
     <div class="previa-contenido">
+      <p><strong>No. Entrada:</strong> {{ numeroEntrada }}</p>
       <p><strong>Dependencia:</strong> {{ formulario.value.dependencia }}</p>
       <p><strong>Vehículo:</strong> {{ formulario.value.marca }} {{ formulario.value.modelo }}</p>
+      <p><strong>Placa:</strong> {{ formulario.value.placa }}</p>
       <p><strong>Estado:</strong> {{ estadoFormulario }}</p>
     </div>
   </div>
