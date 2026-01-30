@@ -92,7 +92,7 @@
 }
 
 .logo-gobierno {
-  max-width: 200px;
+  max-width: 500px;
   height: auto;
 }
 
@@ -115,10 +115,60 @@
   text-transform: uppercase;
 }
 
-/* SECCIONES CON DISTRIBUCIÓN EXACTA */
+/* SECCIONES CON DISTRIBUCIÓN EXACTA - ESTILO UNIFICADO */
 .seccion-documento {
   margin-bottom: 20px;
   page-break-inside: avoid;
+  background: #f8f9fa;
+  padding: 15px;
+  border-left: 4px solid;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Colores diferentes para cada sección */
+.seccion-documento:nth-of-type(1) {
+  border-left-color: #1F3C73; /* Azul para Datos Básicos */
+}
+
+.seccion-documento:nth-of-type(2) {
+  border-left-color: #1F3C73; /* Verde para Datos del Vehículo */
+}
+
+.seccion-combustible {
+  border-left-color: #f39c12 !important; /* Naranja para Combustible */
+}
+
+.seccion-documento:nth-of-type(4) {
+  border-left-color: #1F3C73; /* Morado para Mantenimiento */
+}
+
+.seccion-documento:nth-of-type(5) {
+  border-left-color: #1F3C73; /* Turquesa para Sustitución */
+}
+
+.seccion-documento:nth-of-type(6) {
+  border-left-color: #1F3C73; /* Naranja oscuro para Reparación */
+}
+
+.seccion-documento:nth-of-type(7) {
+  border-left-color: #1F3C73; /* Gris azulado para Tipo de Vehículo */
+}
+
+.seccion-documento:nth-of-type(8) {
+  border-left-color: #1F3C73; /* Rojo para Transporte de Pasajeros */
+}
+
+.seccion-documento:nth-of-type(9) {
+  border-left-color: #1F3C73; /* Verde azulado para Detalles del Viaje */
+}
+
+.seccion-documento:nth-of-type(10) {
+  border-left-color: #1F3C73; /* Morado oscuro para Observaciones */
+}
+
+.seccion-firmas {
+  border-left-color: #2c55a0 !important; /* Azul oscuro para Firmas */
+  border-top: 2px solid #2c55a0;
 }
 
 .titulo-seccion {
@@ -199,13 +249,6 @@
 }
 
 /* ESTILOS ESPECÍFICOS PARA COMBUSTIBLE */
-.seccion-combustible {
-  background: #f8f9fa;
-  border-left: 4px solid #f39c12;
-  padding: 15px;
-  margin-bottom: 20px;
-}
-
 .opciones-inline {
   display: flex;
   gap: 20px;
@@ -267,13 +310,6 @@
 }
 
 /* SECCIÓN DE FIRMAS */
-.seccion-firmas {
-  margin-top: 30px;
-  padding: 20px;
-  background: #f8f9fa;
-  border-top: 2px solid #2c3e50;
-}
-
 .area-firma {
   margin-bottom: 25px;
 }
@@ -318,12 +354,12 @@
 }
 
 .btn-imprimir {
-  background: #2c3e50;
+  background: #1F3C73;
   color: white;
 }
 
 .btn-limpiar {
-  background: #95a5a6;
+  background: #5c0a0a;
   color: white;
 }
 
@@ -400,6 +436,65 @@
     margin: 10px 0 !important;
   }
   
+  /* SECCIONES EN IMPRESIÓN - ESTILO UNIFICADO */
+  .seccion-documento {
+    background: white !important;
+    border-left: 3px solid #000 !important;
+    padding: 10px !important;
+    margin-bottom: 15px !important;
+    border-radius: 0 !important;
+  }
+  
+  /* Mantener colores en impresión pero más sutiles */
+  .seccion-documento:nth-of-type(1) {
+  border-left-color: #a8d8ea; /* Azul pastel */
+}
+
+.seccion-documento:nth-of-type(2) {
+  border-left-color: #aa96da; /* Lila pastel */
+}
+
+.seccion-combustible {
+  border-left-color: #ffd3b6 !important; /* Naranja pastel */
+}
+
+.seccion-documento:nth-of-type(4) {
+  border-left-color: #c7f0d8; /* Verde pastel */
+}
+
+.seccion-documento:nth-of-type(5) {
+  border-left-color: #ffaaa5; /* Rosa pastel */
+}
+
+.seccion-documento:nth-of-type(6) {
+  border-left-color: #fcbad3; /* Rosa claro */
+}
+
+.seccion-documento:nth-of-type(7) {
+  border-left-color: #ffffd2; /* Amarillo pastel */
+}
+
+.seccion-documento:nth-of-type(8) {
+  border-left-color: #d9d7f1; /* Lila claro */
+}
+
+.seccion-documento:nth-of-type(9) {
+  border-left-color: #ffd3b4; /* Melocotón */
+}
+
+.seccion-documento:nth-of-type(10) {
+  border-left-color: #c6f1e7; /* Turquesa pastel */
+}
+  
+  .seccion-documento:nth-of-type(10) {
+    border-left-color: #8e44ad !important;
+  }
+  
+  .seccion-firmas {
+    border-left-color: #2c3e50 !important;
+    border-top: 2px solid #2c3e50 !important;
+  }
+  
   /* MOSTRAR VALORES EN IMPRESIÓN */
   .valor-impresion {
     display: inline-block !important;
@@ -416,20 +511,6 @@
     min-width: 150px !important;
     height: 18px !important;
     margin-left: 10px !important;
-  }
-  
-  /* SECCIONES EN IMPRESIÓN */
-  .seccion-documento {
-    border: none !important;
-    background: white !important;
-    padding: 0 !important;
-    margin-bottom: 15px !important;
-  }
-  
-  .seccion-combustible {
-    background: white !important;
-    border-left: 3px solid #000 !important;
-    padding: 10px !important;
   }
   
   /* PASAJEROS EN IMPRESIÓN - NÚMERO SOBRE LÍNEA */
@@ -552,6 +633,12 @@
   .logo-gobierno {
     max-width: 150px;
   }
+  
+  /* Ajustar padding en móviles */
+  .seccion-documento {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -581,5 +668,10 @@
   .modulo-input-numero {
     width: 100%;
     margin-top: 5px;
+  }
+  
+  .seccion-documento {
+    padding: 10px;
+    border-left-width: 3px;
   }
 }
