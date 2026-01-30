@@ -1,397 +1,373 @@
+/* ESTILOS PRINCIPALES */
 .formulario-container {
   font-family: 'Arial', sans-serif;
   max-width: 900px;
-  margin: 20px auto;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  background: white;
+  position: relative;
+  min-height: 100vh;
 }
 
-.encabezado {
-  text-align: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 3px solid #2c3e50;
-}
-
-.titulo-principal h1 {
-  color: #2c3e50;
-  margin: 0;
-  font-size: 24px;
-}
-
-.titulo-principal h2 {
-  color: #e74c3c;
-  margin: 5px 0 20px 0;
-}
-
-.gobierno h3, .gobierno h4 {
-  color: #2c3e50;
-  margin: 5px 0;
-}
-
-.direccion {
-  margin-top: 15px;
-}
-
-.titulo-form {
-  color: #2980b9;
-  font-size: 22px;
-  margin-top: 10px;
-}
-
-.seccion {
-  background-color: white;
-  padding: 15px;
-  margin-bottom: 20px;
+/* MÓDULO DE ENTRADA SUPERIOR DERECHO */
+.modulo-entrada-derecha {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 250px;
+  background: white;
+  border: 2px solid #2c3e50;
   border-radius: 5px;
-  border-left: 4px solid #3498db;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 12px;
+  z-index: 1000;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
 
-.seccion h4, .seccion h5 {
-  color: #2c3e50;
-  margin-top: 0;
-}
-
-.fila {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 15px;
-}
-
-.campo {
-  flex: 1;
-  margin-bottom: 10px;
-}
-
-.campo label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #34495e;
-  font-size: 14px;
-}
-
-.campo input[type="text"],
-.campo input[type="number"],
-.campo input[type="date"],
-.campo input[type="time"],
-.campo textarea,
-.campo-ancho {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.campo textarea {
-  resize: vertical;
-  min-height: 60px;
-}
-
-.opciones-checkbox,
-.opciones-radio {
-  display: flex;
-  gap: 20px;
-  margin: 10px 0;
-}
-
-.opciones-checkbox label,
-.opciones-radio label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: normal;
-}
-
-.combustible {
-  background-color: #f8f9fa;
-  border-left-color: #f39c12;
-}
-
-.firmas {
-  background-color: #ecf0f1;
-  border-left-color: #27ae60;
-}
-
-.firmas-digitales {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: white;
-  border-radius: 5px;
-  border: 1px dashed #3498db;
-}
-
-.canvas-firma {
-  border: 1px solid #ddd;
-  background-color: white;
-  display: block;
-  margin: 10px 0;
-  cursor: crosshair;
-}
-
-.firma-area {
-  margin-bottom: 20px;
-}
-
-.firma-area button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 5px 15px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.advertencia {
-  background-color: #fff3cd;
-  border: 1px solid #ffeaa7;
-  color: #856404;
-  padding: 15px;
-  margin: 20px 0;
-  border-radius: 5px;
-  text-align: center;
-  font-size: 12px;
-}
-
-.botones-accion {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 30px;
-  flex-wrap: wrap;
-}
-
-.btn-guardar,
-.btn-imprimir,
-.btn-pdf,
-.btn-limpiar {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-guardar {
-  background-color: #27ae60;
-  color: white;
-}
-
-.btn-guardar:hover {
-  background-color: #219653;
-}
-
-.btn-imprimir {
-  background-color: #3498db;  
-  color: white;
-}
-
-.btn-imprimir:hover {
-  background-color: #2980b9;
-}
-
-.btn-pdf {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.btn-pdf:hover {
-  background-color: #c0392b;
-}
-
-.btn-limpiar {
-  background-color: #95a5a6;
-  color: white;
-}
-
-.btn-limpiar:hover {
-  background-color: #7f8c8d;
-}
-
-.vista-previa {
-  background-color: #2c3e50;
-  color: white;
-  padding: 15px;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
-.vista-previa h3 {
-  margin-top: 0;
-  color: #ecf0f1;
-}
-
-.previa-contenido p {
-  margin: 5px 0;
-}
-
-/* Estilos para campos inválidos */
-input.ng-invalid.ng-touched,
-textarea.ng-invalid.ng-touched {
-  border-color: #e74c3c;
-  background-color: #fdf2f2;
-}
-
-.error-message {
-  color: #e74c3c;
-  font-size: 12px;
-  margin-top: 5px;
-}
-
-/* Media queries para responsividad */
-@media (max-width: 768px) {
-  .fila {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .botones-accion {
-    flex-direction: column;
-  }
-  
-  .botones-accion button {
-    width: 100%;
-  }
-}
-
-@media print {
-  .botones-accion,
-  .vista-previa {
-    display: none;
-  }
-  
-  .formulario-container {
-    box-shadow: none;
-    border: none;
-  }
-  
-  .canvas-firma {
-    border: 1px solid #000;
-  }
-}
-
-
-.logo-container {
-  text-align: center;
-  margin: 20px 0;
-  padding: 10px;
-}
-
-.logo-gobierno {
-  max-width: 200px;
-  max-height: 100px;
-  object-fit: contain;
-}
-
-.info-entrada {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 15px auto;
-  max-width: 600px;
-}
-
-.entrada-fila {
+.modulo-fila {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px dashed #ced4da;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 12px;
 }
 
-.entrada-fila:last-child {
+.modulo-fila:last-child {
   border-bottom: none;
   margin-bottom: 0;
-  padding-bottom: 0;
 }
 
-.entrada-label {
+.modulo-label {
   font-weight: bold;
-  color: #495057;
-  font-size: 14px;
+  color: #2c3e50;
+  white-space: nowrap;
 }
 
-.entrada-valor {
-  color: #212529;
-  font-weight: 500;
-  font-size: 14px;
+.modulo-input-numero {
+  border: 1px solid #6c757d;
+  background: #f8f9fa;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  width: 120px;
+  border-radius: 3px;
 }
 
-.entrada-input {
+.modulo-input-numero:focus {
+  outline: none;
+  border-color: #3498db;
+  background: white;
+}
+
+.modulo-valor {
+  font-weight: bold;
+  color: #2c3e50;
+  min-width: 120px;
+  text-align: right;
+}
+
+.hora-en-vivo {
+  color: #e74c3c;
+  font-weight: bold;
+  animation: latido 2s infinite;
+}
+
+@keyframes latido {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* ENCABEZADO PRINCIPAL */
+.encabezado-principal {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #000;
+}
+
+.logo-container {
+  margin: 10px auto 15px;
+}
+
+.logo-gobierno {
+  max-width: 200px;
+  height: auto;
+}
+
+.informacion-gobierno {
+  margin: 10px 0;
+}
+
+.informacion-gobierno h2 {
+  color: #2c3e50;
+  margin: 5px 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.titulo-formulario {
+  color: #000;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 15px 0;
+  text-transform: uppercase;
+}
+
+/* SECCIONES CON DISTRIBUCIÓN EXACTA */
+.seccion-documento {
+  margin-bottom: 20px;
+  page-break-inside: avoid;
+}
+
+.titulo-seccion {
+  font-weight: bold;
+  font-size: 14px;
+  color: #000;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 3px;
+}
+
+.subtitulo-seccion {
+  font-weight: bold;
+  font-size: 13px;
+  color: #000;
+  margin: 10px 0 8px 0;
+}
+
+/* FILAS DE DATOS CON DISTRIBUCIÓN ESPECÍFICA */
+.fila-datos {
+  display: flex;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.fila-datos-2-columnas {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.columna-datos {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.columna-datos:last-child {
+  margin-right: 0;
+}
+
+/* CAMPOS DE ENTRADA ESPECÍFICOS */
+.campo-con-etiqueta {
+  margin-bottom: 10px;
+}
+
+.campo-con-etiqueta label {
+  display: block;
+  font-weight: bold;
+  font-size: 12px;
+  color: #000;
+  margin-bottom: 3px;
+}
+
+.campo-input-linea {
   border: none;
-  border-bottom: 1px solid #6c757d;
+  border-bottom: 1px solid #000;
   background: transparent;
-  width: 200px;
-  padding: 2px 5px;
-  font-size: 14px;
-  text-align: left;
+  padding: 5px 0;
+  font-size: 13px;
+  width: 100%;
+  font-family: 'Courier New', monospace;
 }
 
-.entrada-input:focus {
+.campo-input-linea:focus {
   outline: none;
   border-bottom-color: #3498db;
 }
 
-/* Si el logo no carga, mostrar texto alternativo */
-.logo-container::before {
-  content: attr(data-alt);
-  display: none;
+.campo-textarea-lineas {
+  border: 1px solid #000;
+  background: transparent;
+  padding: 8px;
+  font-size: 13px;
+  width: 100%;
+  min-height: 60px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* ESTILOS ESPECÍFICOS PARA COMBUSTIBLE */
+.seccion-combustible {
+  background: #f8f9fa;
+  border-left: 4px solid #f39c12;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.opciones-inline {
+  display: flex;
+  gap: 20px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+
+.opciones-inline label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: normal;
   font-size: 12px;
+}
+
+/* ESTILO ESPECIAL PARA PASAJEROS - NÚMERO SOBRE LÍNEA */
+.contenedor-pasajeros-especial {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+.numero-sobre-linea-especial {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+  text-align: center;
+}
+
+.linea-puntos-especial {
+  display: inline-block;
+  width: 100px;
+  letter-spacing: 3px;
+  font-size: 16px;
+  color: #000;
+  opacity: 0.7;
+}
+
+.numero-encima-especial {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  background: white;
+}
+
+.input-cantidad-pasajeros {
+  width: 80px;
+  padding: 5px;
+  border: 1px solid #000;
+  font-size: 14px;
+  text-align: center;
+  margin-left: 15px;
+}
+
+/* SECCIÓN DE FIRMAS */
+.seccion-firmas {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-top: 2px solid #2c3e50;
+}
+
+.area-firma {
+  margin-bottom: 25px;
+}
+
+.linea-firma {
+  border-bottom: 1px solid #000;
+  margin-top: 40px;
+  min-height: 1px;
+}
+
+.texto-firma {
+  font-size: 11px;
   color: #666;
+  text-align: center;
+  margin-top: 5px;
+  font-style: italic;
 }
 
-.logo-container:has(img[src=""])::before {
-  display: block;
+/* BOTONES DE ACCIÓN */
+.botones-accion {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 30px 0;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
 }
 
-/* Media queries para el logo */
-@media (max-width: 768px) {
-  .logo-gobierno {
-    max-width: 150px;
-  }
-  
-  .entrada-input {
-    width: 150px;
-  }
+.btn-documento {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
 }
 
-@media print {
-  .logo-gobierno {
-    max-width: 150px;
-    filter: grayscale(100%);
-  }
+.btn-guardar {
+  background: #27ae60;
+  color: white;
+}
+
+.btn-imprimir {
+  background: #2c3e50;
+  color: white;
+}
+
+.btn-limpiar {
+  background: #95a5a6;
+  color: white;
+}
+
+.btn-documento:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* ADVERTENCIA FINAL */
+.advertencia-documento {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  padding: 12px;
+  margin: 20px 0;
+  text-align: center;
+  font-size: 11px;
+  color: #856404;
+  font-weight: bold;
 }
 
 /* =========================================== */
-/* ESTILOS ESPECÍFICOS PARA IMPRESIÓN */
+/* VISTA DE IMPRESIÓN EXACTA COMO PDF */
 /* =========================================== */
-
-/* Ocultar todo excepto la vista de impresión cuando se imprime */
 @media print {
-  /* Ocultar la vista normal */
-  .requisicion-form {
+  /* OCULTAR TODO LO NO NECESARIO */
+  .modulo-entrada-derecha,
+  .botones-accion,
+  .advertencia-documento,
+  input,
+  textarea,
+  button,
+  .campo-input-linea,
+  .campo-textarea-lineas,
+  .input-cantidad-pasajeros {
     display: none !important;
   }
   
-  /* Mostrar la vista de impresión */
-  .vista-impresion {
-    display: block !important;
-  }
-  
-  /* Estilos generales para impresión */
+  /* ESTILOS GENERALES DE IMPRESIÓN */
   body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Times New Roman', serif;
-    color: #000;
+    margin: 0 !important;
+    padding: 0 !important;
     background: white !important;
+    font-family: 'Times New Roman', serif !important;
+    font-size: 11pt !important;
   }
   
   .formulario-container {
@@ -400,234 +376,210 @@ textarea.ng-invalid.ng-touched {
     padding: 0.5in !important;
     box-shadow: none !important;
     border: none !important;
+  }
+  
+  /* ENCABEZADO DE IMPRESIÓN */
+  .encabezado-principal {
+    border-bottom: 2px solid #000 !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 10px !important;
+  }
+  
+  .logo-gobierno {
+    max-width: 150px !important;
+    filter: grayscale(100%) !important;
+  }
+  
+  .informacion-gobierno h2 {
+    font-size: 12pt !important;
+    margin: 2px 0 !important;
+  }
+  
+  .titulo-formulario {
+    font-size: 14pt !important;
+    margin: 10px 0 !important;
+  }
+  
+  /* MOSTRAR VALORES EN IMPRESIÓN */
+  .valor-impresion {
+    display: inline-block !important;
+    border-bottom: 1px solid #000 !important;
+    min-width: 150px !important;
+    padding: 0 5px !important;
+    margin-left: 10px !important;
+    font-family: 'Courier New', monospace !important;
+  }
+  
+  .valor-impresion-vacio {
+    display: inline-block !important;
+    border-bottom: 1px solid #000 !important;
+    min-width: 150px !important;
+    height: 18px !important;
+    margin-left: 10px !important;
+  }
+  
+  /* SECCIONES EN IMPRESIÓN */
+  .seccion-documento {
+    border: none !important;
     background: white !important;
+    padding: 0 !important;
+    margin-bottom: 15px !important;
   }
   
-  /* Encabezado de impresión */
-  .impresion-encabezado {
-    text-align: center;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #000;
-    padding-bottom: 15px;
+  .seccion-combustible {
+    background: white !important;
+    border-left: 3px solid #000 !important;
+    padding: 10px !important;
   }
   
-  .impresion-titulo-principal h1 {
-    font-size: 18pt;
-    margin: 0;
-    font-weight: bold;
+  /* PASAJEROS EN IMPRESIÓN - NÚMERO SOBRE LÍNEA */
+  .impresion-pasajeros-contenedor {
+    display: inline-block !important;
+    position: relative !important;
+    margin: 0 10px !important;
+    vertical-align: middle !important;
   }
   
-  .impresion-titulo-principal h2 {
-    font-size: 14pt;
-    margin: 5px 0 15px 0;
-    font-weight: normal;
+  .impresion-linea-puntos {
+    display: inline-block !important;
+    width: 120px !important;
+    letter-spacing: 4px !important;
+    font-size: 14pt !important;
+    color: #000 !important;
+    opacity: 0.8 !important;
   }
   
-  .logo-impresion {
-    max-width: 150px;
-    max-height: 80px;
-    margin: 10px auto;
+  .impresion-numero-arriba {
+    position: absolute !important;
+    top: -15px !important;
+    left: 0 !important;
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 16pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    background: white !important;
+    padding: 0 5px !important;
   }
   
-  .impresion-info-entrada {
-    margin: 15px 0;
-    font-size: 11pt;
-  }
-  
-  .impresion-fila {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 5px;
-  }
-  
-  .impresion-label {
-    font-weight: bold;
-    margin-right: 5px;
-  }
-  
-  .impresion-valor {
-    border-bottom: 1px solid #000;
-    min-width: 150px;
-    text-align: center;
-  }
-  
-  .impresion-direccion {
-    margin-top: 15px;
-  }
-  
-  .impresion-direccion p {
-    margin: 3px 0;
-    font-size: 11pt;
-  }
-  
-  .impresion-titulo-form {
-    font-size: 16pt;
-    margin: 10px 0;
-    text-decoration: underline;
-  }
-  
-  /* Secciones */
-  .impresion-seccion {
-    margin: 15px 0;
-    page-break-inside: avoid;
-  }
-  
-  .impresion-subtitulo {
-    font-size: 12pt;
-    font-weight: bold;
-    margin: 10px 0 5px 0;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 3px;
-  }
-  
-  .impresion-subsubtitulo {
-    font-size: 11pt;
-    font-weight: bold;
-    margin: 8px 0 5px 0;
-  }
-  
-  .impresion-fila-datos {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px 0;
-  }
-  
-  .impresion-campo {
-    flex: 1;
-    margin: 0 10px;
-  }
-  
-  .impresion-campo-completo {
-    margin: 8px 0;
-  }
-  
-  .impresion-dato {
-    border-bottom: 1px solid #000;
-    padding: 2px 5px;
-    min-width: 150px;
-    display: inline-block;
-  }
-  
-  .impresion-texto {
-    border-bottom: 1px solid #000;
-    padding: 5px;
-    min-height: 20px;
-    margin-top: 5px;
-  }
-  
-  .impresion-texto-grande {
-    border: 1px solid #ccc;
-    padding: 8px;
-    min-height: 40px;
-    margin-top: 5px;
-    font-size: 10pt;
-  }
-  
-  /* Líneas para pasajeros - ESTILO ESPECIAL */
-  .linea-pasajeros {
-    display: inline-block;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
-    margin: 0 5px;
-  }
-  
-  /* Opciones (checkboxes) */
-  .impresion-opciones {
-    margin: 8px 0;
-  }
-  
-  /* Firmas */
-  .firmas-impresion {
-    margin-top: 30px;
-  }
-  
-  .impresion-firmas {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 40px;
-  }
-  
-  .impresion-firma {
-    text-align: center;
-    width: 40%;
+  /* FIRMAS EN IMPRESIÓN */
+  .impresion-area-firma {
+    margin: 40px 0 20px 0 !important;
   }
   
   .impresion-linea-firma {
-    border-top: 1px solid #000;
-    margin: 40px 0 5px 0;
+    border-top: 1px solid #000 !important;
+    margin: 40px 0 5px 0 !important;
+    width: 100% !important;
+  }
+  
+  .impresion-texto-firma {
+    font-size: 10pt !important;
+    text-align: center !important;
+    font-style: italic !important;
+  }
+  
+  /* DISTRIBUCIÓN EN COLUMNAS PARA IMPRESIÓN */
+  .impresion-fila-2-columnas {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .impresion-columna {
+    flex: 1;
+    padding: 0 10px;
+  }
+  
+  /* EVITAR SALTO DE PÁGINA */
+  .no-romper-pagina {
+    page-break-inside: avoid !important;
+  }
+  
+  /* MOSTRAR ETIQUETAS DE IMPRESIÓN */
+  .impresion-etiqueta {
+    font-weight: bold !important;
+    display: inline-block !important;
+    min-width: 120px !important;
+  }
+}
+
+/* =========================================== */
+/* RESPONSIVE PARA MÓVILES */
+/* =========================================== */
+@media (max-width: 768px) {
+  .formulario-container {
+    padding: 15px;
+    margin: 10px auto;
+  }
+  
+  .modulo-entrada-derecha {
+    position: static;
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: none;
+  }
+  
+  .fila-datos-2-columnas {
+    flex-direction: column;
+  }
+  
+  .columna-datos {
+    margin-right: 0;
+    margin-bottom: 15px;
     width: 100%;
   }
   
-  .impresion-label-firma {
-    font-size: 10pt;
-    font-style: italic;
+  .botones-accion {
+    flex-direction: column;
+    gap: 10px;
   }
   
-  /* Advertencia */
-  .impresion-advertencia {
-    margin-top: 30px;
+  .btn-documento {
+    width: 100%;
+  }
+  
+  .opciones-inline {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .contenedor-pasajeros-especial {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .logo-gobierno {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .formulario-container {
     padding: 10px;
-    border: 1px solid #000;
-    font-size: 9pt;
-    text-align: center;
-    page-break-inside: avoid;
   }
   
-  .impresion-advertencia p {
-    margin: 3px 0;
+  .titulo-formulario {
+    font-size: 16px;
   }
   
-  /* Footer */
-  .impresion-footer {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 9pt;
-    color: #666;
-    font-style: italic;
+  .informacion-gobierno h2 {
+    font-size: 14px;
   }
   
-  /* Ocultar elementos no deseados */
-  .botones-accion,
-  .vista-previa,
-  .canvas-firma,
-  button,
-  input,
-  textarea,
-  select {
-    display: none !important;
+  .modulo-fila {
+    flex-direction: column;
+    align-items: flex-start;
   }
-}
-
-/* Estilos para la vista de impresión en pantalla */
-.vista-impresion {
-  display: none;
-  background: white;
-  padding: 20px;
-}
-
-/* Estilos cuando está activo el modo impresión (para previsualización) */
-.modo-impresion-activo .vista-impresion {
-  display: block;
-}
-
-.modo-impresion-activo .requisicion-form {
-  display: none;
-}
-
-/* Estilos especiales para la línea de pasajeros en pantalla */
-.linea-pasajeros {
-  font-family: 'Courier New', monospace;
-  letter-spacing: 2px;
-  color: #333;
-  margin: 0 5px;
-}
-
-/* Botón de impresión en la vista normal */
-.btn-imprimir {
-  background-color: #2c3e50;
-  color: white;
-}
-
-.btn-imprimir:hover {
-  background-color: #1a252f;
+  
+  .modulo-valor {
+    text-align: left;
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+  .modulo-input-numero {
+    width: 100%;
+    margin-top: 5px;
+  }
 }
