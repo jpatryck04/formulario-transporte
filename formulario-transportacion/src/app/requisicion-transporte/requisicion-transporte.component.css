@@ -447,44 +447,40 @@
   
   /* Mantener colores en impresión pero más sutiles */
   .seccion-documento:nth-of-type(1) {
-  border-left-color: #a8d8ea; /* Azul pastel */
-}
-
-.seccion-documento:nth-of-type(2) {
-  border-left-color: #aa96da; /* Lila pastel */
-}
-
-.seccion-combustible {
-  border-left-color: #ffd3b6 !important; /* Naranja pastel */
-}
-
-.seccion-documento:nth-of-type(4) {
-  border-left-color: #c7f0d8; /* Verde pastel */
-}
-
-.seccion-documento:nth-of-type(5) {
-  border-left-color: #ffaaa5; /* Rosa pastel */
-}
-
-.seccion-documento:nth-of-type(6) {
-  border-left-color: #fcbad3; /* Rosa claro */
-}
-
-.seccion-documento:nth-of-type(7) {
-  border-left-color: #ffffd2; /* Amarillo pastel */
-}
-
-.seccion-documento:nth-of-type(8) {
-  border-left-color: #d9d7f1; /* Lila claro */
-}
-
-.seccion-documento:nth-of-type(9) {
-  border-left-color: #ffd3b4; /* Melocotón */
-}
-
-.seccion-documento:nth-of-type(10) {
-  border-left-color: #c6f1e7; /* Turquesa pastel */
-}
+    border-left-color: #3498db !important;
+  }
+  
+  .seccion-documento:nth-of-type(2) {
+    border-left-color: #2ecc71 !important;
+  }
+  
+  .seccion-combustible {
+    border-left-color: #f39c12 !important;
+  }
+  
+  .seccion-documento:nth-of-type(4) {
+    border-left-color: #9b59b6 !important;
+  }
+  
+  .seccion-documento:nth-of-type(5) {
+    border-left-color: #1abc9c !important;
+  }
+  
+  .seccion-documento:nth-of-type(6) {
+    border-left-color: #d35400 !important;
+  }
+  
+  .seccion-documento:nth-of-type(7) {
+    border-left-color: #34495e !important;
+  }
+  
+  .seccion-documento:nth-of-type(8) {
+    border-left-color: #c0392b !important;
+  }
+  
+  .seccion-documento:nth-of-type(9) {
+    border-left-color: #16a085 !important;
+  }
   
   .seccion-documento:nth-of-type(10) {
     border-left-color: #8e44ad !important;

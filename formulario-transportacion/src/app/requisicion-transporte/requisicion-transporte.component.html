@@ -43,6 +43,14 @@
   <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
     <!-- SECCIÓN 1: DATOS BÁSICOS -->
     <div class="seccion-documento">
+      <div class="campo-con-etiqueta">
+        <label>DEPENDENCIA SOLICITANTE:</label>
+        <input type="text" 
+               formControlName="dependencia" 
+               class="campo-input-linea"
+               placeholder="Nombre de la dependencia">
+      </div>
+      
       <div class="fila-datos-2-columnas">
         <div class="columna-datos">
           <div class="campo-con-etiqueta">
@@ -57,14 +65,6 @@
             <input type="time" formControlName="hora" class="campo-input-linea">
           </div>
         </div>
-      </div>
-      
-      <div class="campo-con-etiqueta">
-        <label>DEPENDENCIA SOLICITANTE:</label>
-        <input type="text" 
-               formControlName="dependencia" 
-               class="campo-input-linea"
-               placeholder="Nombre de la dependencia">
       </div>
     </div>
 
@@ -198,9 +198,12 @@
       
       <div class="opciones-inline">
         <label>
-          <input type="checkbox" formControlName="carga"> CARGA
+          <input type="checkbox" formControlName="carga"> PASAJEROS
         </label>
         <label>
+          <input type="checkbox" formControlName="ambulancia"> CARGA
+        </label>
+                <label>
           <input type="checkbox" formControlName="ambulancia"> AMBULANCIA
         </label>
       </div>
@@ -289,47 +292,45 @@
 
     <!-- SECCIÓN 11: RESPONSABLES Y FIRMAS -->
     <div class="seccion-documento seccion-firmas">
+      <!-- Encabezados principales -->
+      <div class="fila-datos-2-columnas" style="margin-bottom: 50px;">
+        <div class="columna-datos" style="text-align: center;">
+          <div class="campo-con-etiqueta">
+            <label style="text-align: center;">RESPONSABLE DEPENDENCIA</label>
+          </div>
+        </div>
+        <div class="columna-datos" style="text-align: center;">
+          <div class="campo-con-etiqueta">
+            <label style="text-align: center;">AUTORIZADO POR</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido principal -->
       <div class="fila-datos-2-columnas">
         <div class="columna-datos">
           <div class="campo-con-etiqueta">
-            <label>RESPONSABLE DEPENDENCIA:</label>
-            <input type="text" formControlName="responsableDependencia" class="campo-input-linea">
+            <label>NOMBRE</label>
+            <div style="border-bottom: 1px solid #000; height: 20px; margin-bottom: 10px;"></div>
+          </div>
+          
+          <div class="campo-con-etiqueta">
+            <label>CARGO</label>
+            <div style="border-bottom: 1px solid #000; height: 20px; margin-bottom: 10px;"></div>
+          </div>
+          
+          <div class="campo-con-etiqueta">
+            <label>FIRMA</label>
+            <div style="border-bottom: 1px solid #000; height: 50px;"></div>
           </div>
         </div>
         
-        <div class="columna-datos">
+        <div class="columna-datos" style="text-align: center;">
           <div class="campo-con-etiqueta">
-            <label>NOMBRE:</label>
-            <input type="text" formControlName="nombreResponsable" class="campo-input-linea">
+            <label style="text-align: center;">DIRECTOR(A) ADMINISTRATIVO</label>
+            <div style="border-bottom: 1px solid #000; height: 20px; margin-bottom: 10px; margin-top: 50px;"></div>
           </div>
         </div>
-      </div>
-      
-      <div class="fila-datos-2-columnas">
-        <div class="columna-datos">
-          <div class="campo-con-etiqueta">
-            <label>DIRECTOR(A) ADMINISTRATIVO:</label>
-            <input type="text" formControlName="directorAdministrativo" class="campo-input-linea">
-          </div>
-        </div>
-        
-        <div class="columna-datos">
-          <div class="campo-con-etiqueta">
-            <label>CARGO:</label>
-            <input type="text" formControlName="cargo" class="campo-input-linea">
-          </div>
-        </div>
-      </div>
-      
-      <!-- ÁREAS DE FIRMA -->
-      <div class="area-firma">
-        <div class="linea-firma"></div>
-        <div class="texto-firma">Firma del Responsable</div>
-      </div>
-      
-      <div class="area-firma">
-        <div class="linea-firma"></div>
-        <div class="texto-firma">Firma del Director Administrativo</div>
       </div>
     </div>
 
