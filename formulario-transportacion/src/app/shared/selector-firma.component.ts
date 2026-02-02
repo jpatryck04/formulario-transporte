@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
 
 @Component({
   selector: 'app-selector-firma',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="selector-firma-container" *ngIf="mostrarSelector">
       <div class="overlay" (click)="cerrar()"></div>
@@ -17,45 +18,136 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
         </div>
 
         <div class="modal-body">
-          <div *ngIf="firmas.length === 0" class="sin-firmas">
-            <p>No tienes firmas digitales guardadas.</p>
-            <button (click)="abrirCapturador()" class="btn-nueva-firma">
-              Crear Nueva Firma Digital
+          <!-- Pestañas -->
+          <div class="pestanas">
+            <button 
+              class="pestaña" 
+              [class.activa]="pestanaActiva === 'firmas'"
+              (click)="pestanaActiva = 'firmas'">
+              Mis Firmas
+            </button>
+            <button 
+              class="pestaña" 
+              [class.activa]="pestanaActiva === 'dibujar'"
+              (click)="pestanaActiva = 'dibujar'">
+              Dibujar Firma
+            </button>
+            <button 
+              class="pestaña" 
+              [class.activa]="pestanaActiva === 'importar'"
+              (click)="pestanaActiva = 'importar'">
+              Importar Imagen
             </button>
           </div>
 
-          <div *ngIf="firmas.length > 0" class="lista-firmas">
-            <div class="firmas-grid">
-              <div 
-                *ngFor="let firma of firmas" 
-                class="firma-item"
-                (click)="seleccionarFirma(firma.id)"
-              >
-                <div class="preview-firma">
-                  <img [src]="firma.datos" [alt]="firma.nombre">
-                </div>
-                <div class="info-firma">
-                  <p class="nombre-firma">{{ firma.nombre }}</p>
-                  <p class="fecha-firma">{{ firma.fecha | date:'dd/MM/yyyy' }}</p>
-                </div>
-                <button 
-                  class="btn-eliminar" 
-                  (click)="eliminarFirma($event, firma.id)"
-                  title="Eliminar"
-                >
-                  🗑️
-                </button>
-              </div>
+          <!-- TAB 1: Mis Firmas -->
+          <div class="contenido-pestaña" *ngIf="pestanaActiva === 'firmas'">
+            <div *ngIf="firmas.length === 0" class="sin-firmas">
+              <p>No tienes firmas digitales guardadas.</p>
             </div>
 
-            <button (click)="abrirCapturador()" class="btn-nueva-firma-secundario">
-              + Agregar Nueva Firma Digital
-            </button>
+            <div *ngIf="firmas.length > 0" class="lista-firmas">
+              <div class="firmas-grid">
+                <div 
+                  *ngFor="let firma of firmas" 
+                  class="firma-item"
+                  (click)="seleccionarFirma(firma.id)"
+                >
+                  <div class="preview-firma">
+                    <img [src]="firma.datos" [alt]="firma.nombre">
+                  </div>
+                  <div class="info-firma">
+                    <p class="nombre-firma">{{ firma.nombre }}</p>
+                    <p class="fecha-firma">{{ firma.fecha | date:'dd/MM/yyyy' }}</p>
+                  </div>
+                  <button 
+                    class="btn-eliminar" 
+                    (click)="eliminarFirma($event, firma.id)"
+                    title="Eliminar"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: Dibujar Firma -->
+          <div class="contenido-pestaña" *ngIf="pestanaActiva === 'dibujar'">
+            <div class="canvas-wrapper">
+              <canvas 
+                #canvasRef
+                class="canvas-firma"
+                (mousedown)="iniciarFirmaCanvas($event)"
+                (mousemove)="dibujarFirmaCanvas($event)"
+                (mouseup)="terminarFirmaCanvas()"
+                (mouseleave)="terminarFirmaCanvas()"
+              ></canvas>
+            </div>
+            <div class="nombre-firma">
+              <label for="nombreFirmaCanvas">Nombre para la firma:</label>
+              <input 
+                id="nombreFirmaCanvas"
+                type="text" 
+                [(ngModel)]="nombreFirmaCanvas" 
+                placeholder="Ej: Mi Firma"
+                class="input-nombre"
+              >
+            </div>
+            <div class="botones-firma">
+              <button (click)="limpiarCanvasLocal()" class="btn-limpiar">Limpiar</button>
+              <button (click)="guardarFirmaCanvas()" class="btn-guardar" [disabled]="!firmaCapturadaCanvas">
+                Guardar Firma
+              </button>
+            </div>
+            <div *ngIf="mensajeExitoCanvas" class="mensaje-exito">
+              {{ mensajeExitoCanvas }}
+            </div>
+          </div>
+
+          <!-- TAB 3: Importar Imagen -->
+          <div class="contenido-pestaña" *ngIf="pestanaActiva === 'importar'">
+            <div class="zona-carga">
+              <div class="zona-carga-contenido">
+                <p class="icono-carga">📁</p>
+                <p class="titulo-carga">Arrastra una imagen aquí o haz clic</p>
+                <p class="subtitulo-carga">Formatos soportados: PNG, JPG, GIF</p>
+              </div>
+              <input 
+                #inputArchivo
+                type="file" 
+                accept="image/png,image/jpeg,image/gif"
+                (change)="cargarImagen($event)"
+                class="input-archivo"
+              >
+            </div>
+
+            <div class="preview-importada" *ngIf="imagenCargada">
+              <div class="preview-titulo">Vista Previa:</div>
+              <img [src]="imagenCargada" alt="Firma importada" class="imagen-preview">
+              <div class="nombre-importada">
+                <label for="nombreFirmaImportada">Nombre para la firma:</label>
+                <input 
+                  id="nombreFirmaImportada"
+                  type="text" 
+                  [(ngModel)]="nombreFirmaImportada" 
+                  placeholder="Ej: Firma Oficial"
+                  class="input-nombre"
+                >
+              </div>
+              <div class="botones-importar">
+                <button (click)="limpiarImagen()" class="btn-limpiar">Seleccionar Otra</button>
+                <button (click)="guardarFirmaImportada()" class="btn-guardar">Guardar Firma</button>
+              </div>
+              <div *ngIf="mensajeExitoImportar" class="mensaje-exito">
+                {{ mensajeExitoImportar }}
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button (click)="cerrar()" class="btn-cancelar">Cancelar</button>
+          <button (click)="cerrar()" class="btn-cancelar">Cerrar</button>
         </div>
       </div>
     </div>
@@ -87,7 +179,7 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
       background: white;
       border-radius: 8px;
       box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
-      max-width: 600px;
+      max-width: 700px;
       width: 90%;
       max-height: 80vh;
       display: flex;
@@ -117,13 +209,40 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
       padding: 0;
       width: 30px;
       height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .btn-cerrar:hover {
       color: #333;
+    }
+
+    /* PESTAÑAS */
+    .pestanas {
+      display: flex;
+      border-bottom: 2px solid #eee;
+      background: #f9f9f9;
+      padding: 0 20px;
+    }
+
+    .pestaña {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .pestaña:hover {
+      color: #0066cc;
+    }
+
+    .pestaña.activa {
+      color: #0066cc;
+      border-bottom-color: #0066cc;
     }
 
     .modal-body {
@@ -132,15 +251,19 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
       padding: 20px;
     }
 
+    .contenido-pestaña {
+      animation: fadeIn 0.2s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .sin-firmas {
       text-align: center;
       padding: 40px 20px;
-    }
-
-    .sin-firmas p {
-      color: #666;
-      margin-bottom: 20px;
-      font-size: 16px;
+      color: #999;
     }
 
     .lista-firmas {
@@ -149,15 +272,15 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
 
     .firmas-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 15px;
     }
 
     .firma-item {
       border: 2px solid #ddd;
       border-radius: 6px;
-      padding: 12px;
+      padding: 10px;
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
@@ -170,11 +293,11 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
 
     .preview-firma {
       width: 100%;
-      height: 120px;
+      height: 100px;
       border: 1px solid #eee;
       border-radius: 4px;
       overflow: hidden;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       background: #f9f9f9;
       display: flex;
       align-items: center;
@@ -188,14 +311,14 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
     }
 
     .info-firma {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .nombre-firma {
-      margin: 0 0 5px 0;
+      margin: 0 0 3px 0;
       font-weight: 600;
       color: #333;
-      font-size: 14px;
+      font-size: 13px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -204,19 +327,19 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
     .fecha-firma {
       margin: 0;
       color: #999;
-      font-size: 12px;
+      font-size: 11px;
     }
 
     .btn-eliminar {
       position: absolute;
-      top: 8px;
-      right: 8px;
+      top: 5px;
+      right: 5px;
       background: rgba(255, 255, 255, 0.9);
       border: 1px solid #ddd;
       border-radius: 4px;
-      padding: 4px 8px;
+      padding: 3px 6px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 12px;
       transition: all 0.3s ease;
     }
 
@@ -226,38 +349,175 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
       border-color: #ff4444;
     }
 
-    .btn-nueva-firma {
-      background: #0066cc;
-      color: white;
-      padding: 12px 24px;
+    /* CANVAS Y ENTRADA */
+    .canvas-wrapper {
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      background: white;
+    }
+
+    .canvas-firma {
+      display: block;
+      width: 100%;
+      height: 250px;
+      cursor: crosshair;
+      background: white;
+      touch-action: none;
+    }
+
+    .nombre-firma, .nombre-importada {
+      margin-bottom: 12px;
+    }
+
+    .nombre-firma label, .nombre-importada label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #333;
+      font-size: 13px;
+    }
+
+    .input-nombre {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+
+    .input-nombre:focus {
+      outline: none;
+      border-color: #0066cc;
+      box-shadow: 0 0 3px rgba(0, 102, 204, 0.3);
+    }
+
+    .botones-firma, .botones-importar {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       transition: all 0.3s ease;
     }
 
-    .btn-nueva-firma:hover {
-      background: #0052a3;
-    }
-
-    .btn-nueva-firma-secundario {
-      width: 100%;
+    .btn-limpiar {
       background: #f0f0f0;
       color: #333;
-      padding: 10px;
-      border: 1px dashed #0066cc;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.3s ease;
     }
 
-    .btn-nueva-firma-secundario:hover {
-      background: #e8f0ff;
-      border-style: solid;
+    .btn-limpiar:hover {
+      background: #e0e0e0;
+    }
+
+    .btn-guardar {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-guardar:hover:not(:disabled) {
+      background: #218838;
+    }
+
+    .btn-guardar:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* ZONA DE CARGA */
+    .zona-carga {
+      position: relative;
+      border: 3px dashed #0066cc;
+      border-radius: 8px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      background: #f0f7ff;
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .zona-carga:hover {
+      background: #e8f3ff;
+      border-color: #0052a3;
+    }
+
+    .zona-carga-contenido {
+      pointer-events: none;
+    }
+
+    .icono-carga {
+      font-size: 40px;
+      margin: 0 0 10px 0;
+    }
+
+    .titulo-carga {
+      margin: 0 0 5px 0;
+      color: #333;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .subtitulo-carga {
+      margin: 0;
+      color: #999;
+      font-size: 12px;
+    }
+
+    .input-archivo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .preview-importada {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .preview-titulo {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .imagen-preview {
+      max-width: 100%;
+      max-height: 200px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .mensaje-exito {
+      background: #d4edda;
+      color: #155724;
+      padding: 10px;
+      border-radius: 4px;
+      text-align: center;
+      border: 1px solid #c3e6cb;
+      font-size: 13px;
+      margin-top: 10px;
     }
 
     .modal-footer {
@@ -271,12 +531,6 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
       background: #dc3545;
       color: white;
       padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.3s ease;
     }
 
     .btn-cancelar:hover {
@@ -284,18 +538,37 @@ import { FirmaDigitalService, FirmaDigital } from './firma-digital.service';
     }
   `]
 })
-export class SelectorFirmaComponent implements OnInit {
+export class SelectorFirmaComponent implements OnInit, AfterViewInit {
   @Input() mostrarSelector = false;
   @Output() firmaSeleccionada = new EventEmitter<FirmaDigital>();
   @Output() cerrarSelector = new EventEmitter<void>();
+  @ViewChild('canvasRef') canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('inputArchivo') inputArchivo!: ElementRef<HTMLInputElement>;
 
   firmas: FirmaDigital[] = [];
-  mostrarCapturador = false;
+  pestanaActiva: 'firmas' | 'dibujar' | 'importar' = 'firmas';
+  
+  // Canvas properties
+  private canvas!: HTMLCanvasElement;
+  private ctx!: CanvasRenderingContext2D;
+  private estaDibujando = false;
+  firmaCapturadaCanvas = false;
+  nombreFirmaCanvas = '';
+  mensajeExitoCanvas = '';
+
+  // Importar properties
+  imagenCargada: string | null = null;
+  nombreFirmaImportada = '';
+  mensajeExitoImportar = '';
 
   constructor(private firmaService: FirmaDigitalService) {}
 
   ngOnInit(): void {
     this.cargarFirmas();
+  }
+
+  ngAfterViewInit(): void {
+    this.inicializarCanvas();
   }
 
   cargarFirmas(): void {
@@ -321,82 +594,109 @@ export class SelectorFirmaComponent implements OnInit {
     }
   }
 
-  abrirCapturador(): void {
-    // Abrir en nueva ventana o modal
-    const ventana = window.open('', '_blank', 'width=700,height=600');
-    if (ventana) {
-      ventana.document.write(`
-        <html>
-          <head>
-            <title>Capturador de Firma Digital</title>
-            <style>
-              body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-              canvas { border: 2px solid #ddd; display: block; margin: 20px auto; width: 100%; max-width: 600px; height: 300px; background: white; cursor: crosshair; }
-            </style>
-          </head>
-          <body>
-            <h2 style="text-align: center;">Capturar Firma Digital</h2>
-            <canvas id="canvas"></canvas>
-            <div style="text-align: center; margin-bottom: 20px;">
-              <label>Nombre: <input type="text" id="nombre" placeholder="Mi Firma" style="padding: 5px; margin-left: 10px;"></label>
-            </div>
-            <div style="text-align: center; display: flex; gap: 10px; justify-content: center;">
-              <button onclick="limpiar()" style="padding: 10px 20px; cursor: pointer;">Limpiar</button>
-              <button onclick="guardar()" style="padding: 10px 20px; background: green; color: white; cursor: pointer;">Guardar</button>
-              <button onclick="window.close()" style="padding: 10px 20px; background: red; color: white; cursor: pointer;">Cerrar</button>
-            </div>
-            <script>
-              const canvas = document.getElementById('canvas');
-              const ctx = canvas.getContext('2d');
-              let drawing = false;
-
-              canvas.addEventListener('mousedown', () => drawing = true);
-              canvas.addEventListener('mousemove', (e) => {
-                if (!drawing) return;
-                const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                ctx.lineTo(x, y);
-                ctx.stroke();
-                ctx.strokeStyle = '#000';
-                ctx.lineWidth = 2;
-              });
-              canvas.addEventListener('mouseup', () => drawing = false);
-              canvas.addEventListener('mouseleave', () => drawing = false);
-
-              canvas.width = canvas.offsetWidth;
-              canvas.height = canvas.offsetHeight;
-              ctx.fillStyle = 'white';
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-              function limpiar() {
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-              }
-
-              function guardar() {
-                const nombre = document.getElementById('nombre').value;
-                if (!nombre) { alert('Ingrese un nombre'); return; }
-                const datos = canvas.toDataURL();
-                window.opener.postMessage({ tipo: 'firmaGuardada', nombre, datos }, '*');
-                window.close();
-              }
-            </script>
-          </body>
-        </html>
-      `);
-    }
-
-    // Escuchar el mensaje de la ventana
-    window.addEventListener('message', (event) => {
-      if (event.data.tipo === 'firmaGuardada') {
-        this.firmaService.guardarFirma(event.data.nombre, event.data.datos);
-        this.cargarFirmas();
+  /* CANVAS METHODS */
+  private inicializarCanvas(): void {
+    if (this.canvasRef) {
+      this.canvas = this.canvasRef.nativeElement;
+      const ctx = this.canvas.getContext('2d');
+      if (ctx) {
+        this.ctx = ctx;
+        const rect = this.canvas.getBoundingClientRect();
+        this.canvas.width = rect.width;
+        this.canvas.height = rect.height;
+        this.ctx.fillStyle = 'white';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       }
-    });
+    }
+  }
+
+  iniciarFirmaCanvas(event: MouseEvent): void {
+    this.estaDibujando = true;
+    const { offsetX, offsetY } = event;
+    this.ctx.beginPath();
+    this.ctx.moveTo(offsetX, offsetY);
+  }
+
+  dibujarFirmaCanvas(event: MouseEvent): void {
+    if (!this.estaDibujando) return;
+    const { offsetX, offsetY } = event;
+    this.ctx.lineTo(offsetX, offsetY);
+    this.ctx.strokeStyle = '#000000';
+    this.ctx.lineWidth = 2;
+    this.ctx.lineCap = 'round';
+    this.ctx.lineJoin = 'round';
+    this.ctx.stroke();
+    this.firmaCapturadaCanvas = true;
+  }
+
+  terminarFirmaCanvas(): void {
+    this.estaDibujando = false;
+  }
+
+  limpiarCanvasLocal(): void {
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.firmaCapturadaCanvas = false;
+    this.mensajeExitoCanvas = '';
+  }
+
+  guardarFirmaCanvas(): void {
+    if (!this.nombreFirmaCanvas.trim()) {
+      alert('Por favor ingrese un nombre para la firma');
+      return;
+    }
+    const datosBase64 = this.canvas.toDataURL('image/png');
+    this.firmaService.guardarFirma(this.nombreFirmaCanvas, datosBase64);
+    this.mensajeExitoCanvas = '✓ Firma guardada correctamente';
+    this.nombreFirmaCanvas = '';
+    this.limpiarCanvasLocal();
+    this.cargarFirmas();
+    setTimeout(() => { this.mensajeExitoCanvas = ''; }, 2000);
+  }
+
+  /* IMPORTAR MÉTODOS */
+  cargarImagen(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const archivo = input.files?.[0];
+    
+    if (!archivo) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imagenCargada = e.target?.result as string;
+    };
+    reader.readAsDataURL(archivo);
+  }
+
+  limpiarImagen(): void {
+    this.imagenCargada = null;
+    this.nombreFirmaImportada = '';
+    this.mensajeExitoImportar = '';
+    if (this.inputArchivo) {
+      this.inputArchivo.nativeElement.value = '';
+    }
+  }
+
+  guardarFirmaImportada(): void {
+    if (!this.nombreFirmaImportada.trim()) {
+      alert('Por favor ingrese un nombre para la firma');
+      return;
+    }
+    if (!this.imagenCargada) {
+      alert('Por favor cargue una imagen');
+      return;
+    }
+    this.firmaService.guardarFirma(this.nombreFirmaImportada, this.imagenCargada);
+    this.mensajeExitoImportar = '✓ Firma importada correctamente';
+    this.cargarFirmas();
+    setTimeout(() => {
+      this.limpiarImagen();
+      this.mensajeExitoImportar = '';
+    }, 2000);
   }
 
   cerrar(): void {
     this.cerrarSelector.emit();
   }
 }
+
