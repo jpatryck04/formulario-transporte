@@ -671,3 +671,67 @@
     border-left-width: 3px;
   }
 }
+
+/* ESTILOS PARA FIRMAS DIGITALES */
+.contenedor-firma-digital {
+  border: 2px dashed #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  text-align: center;
+  margin: 10px 0;
+  background: #f9f9f9;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.vista-firma-responsable,
+.vista-firma-director {
+  width: 100%;
+  max-width: 200px;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagen-firma {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.sin-firma {
+  color: #999;
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+.btn-seleccionar-firma {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-seleccionar-firma:hover {
+  background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
+}
+
+.btn-seleccionar-firma:active {
+  transform: scale(0.98);
+}

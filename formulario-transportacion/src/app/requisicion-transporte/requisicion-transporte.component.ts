@@ -1,17 +1,27 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { ModalComponent } from '../shared/modal.component';
+import { ModalService, ModalState } from '../shared/modal.service';
+import { SelectorFirmaComponent } from '../shared/selector-firma.component';
+import { FirmaDigitalService, FirmaDigital } from '../shared/firma-digital.service';
 
 @Component({
   selector: 'app-requisicion-transporte',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, ModalComponent, SelectorFirmaComponent],
   templateUrl: './requisicion-transporte.component.html',
   styleUrls: ['./requisicion-transporte.component.css']
 })
 export class RequisicionTransporteComponent implements OnInit {
   formulario!: FormGroup;
   modoImpresion = false;
+  modalState: ModalState | null = null;
+  mostrarSelectorFirma = false;
+  firmaResponsableId: string | null = null;
+  firmaDirectorId: string | null = null;
+  firmaResponsable: FirmaDigital | null = null;
+  firmaDirector: FirmaDigital | null = null;
   
   // Módulo de entrada
   numeroEntrada = this.generarNumeroEntrada();
@@ -27,12 +37,19 @@ export class RequisicionTransporteComponent implements OnInit {
   horaImpresion = '';
   
   private intervaloHora: any;
+  selectorFirmaActivo: 'responsable' | 'director' | null = null;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    public modalService: ModalService,
+    private firmaService: FirmaDigitalService
+  ) { }
 
   ngOnInit(): void {
     this.inicializarFormulario();
     this.iniciarActualizacionHora();
+    this.subscripcionModalState();
+    this.cargarFirmasGuardadas();
   }
 
   ngOnDestroy(): void {
@@ -252,5 +269,52 @@ export class RequisicionTransporteComponent implements OnInit {
       directorAdministrativo: 'ROBERTO SÁNCHEZ',
       cargo: 'DIRECTOR ADMINISTRATIVO'
     });
+  }
+
+  subscripcionModalState(): void {
+    this.modalService.modal$.subscribe((estado: ModalState) => {
+      this.modalState = estado;
+    });
+  }
+
+  cargarFirmasGuardadas(): void {
+    this.firmaService.obtenerFirmaActual().subscribe(firma => {
+      if (firma) {
+        if (this.selectorFirmaActivo === 'responsable') {
+          this.firmaResponsable = firma;
+          this.firmaResponsableId = firma.id;
+        } else if (this.selectorFirmaActivo === 'director') {
+          this.firmaDirector = firma;
+          this.firmaDirectorId = firma.id;
+        }
+      }
+    });
+  }
+
+  abrirSelectorFirmaResponsable(): void {
+    this.selectorFirmaActivo = 'responsable';
+    this.mostrarSelectorFirma = true;
+  }
+
+  abrirSelectorFirmaDirector(): void {
+    this.selectorFirmaActivo = 'director';
+    this.mostrarSelectorFirma = true;
+  }
+
+  onFirmaSeleccionada(firma: FirmaDigital): void {
+    if (this.selectorFirmaActivo === 'responsable') {
+      this.firmaResponsable = firma;
+      this.firmaResponsableId = firma.id;
+    } else if (this.selectorFirmaActivo === 'director') {
+      this.firmaDirector = firma;
+      this.firmaDirectorId = firma.id;
+    }
+    this.mostrarSelectorFirma = false;
+    this.selectorFirmaActivo = null;
+  }
+
+  cerrarSelectorFirma(): void {
+    this.mostrarSelectorFirma = false;
+    this.selectorFirmaActivo = null;
   }
 }

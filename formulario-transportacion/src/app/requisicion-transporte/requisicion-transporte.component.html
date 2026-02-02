@@ -326,8 +326,20 @@
           </div>
           
           <div class="campo-con-etiqueta">
-            <label>FIRMA</label>
-            <div style="border-bottom: 1px solid #000; height: 50px;"></div>
+            <label>FIRMA DIGITAL</label>
+            <div class="contenedor-firma-digital">
+              <div class="vista-firma-responsable" *ngIf="firmaResponsable">
+                <img [src]="firmaResponsable.datos" [alt]="firmaResponsable.nombre" class="imagen-firma">
+              </div>
+              <div class="sin-firma" *ngIf="!firmaResponsable">
+                <p>Sin firma seleccionada</p>
+              </div>
+              <button type="button" 
+                      (click)="abrirSelectorFirmaResponsable()" 
+                      class="btn-seleccionar-firma">
+                {{ firmaResponsable ? 'Cambiar Firma' : 'Seleccionar Firma' }}
+              </button>
+            </div>
           </div>
         </div>
         
@@ -340,8 +352,21 @@
                    style="text-align: center;"
                    placeholder="">
           </div>
-          <div style="margin-top: 30px;">
-            <div style="border-bottom: 1px solid #000; height: 50px;"></div>
+          <div class="campo-con-etiqueta">
+            <label style="text-align: center;">FIRMA DIGITAL</label>
+            <div class="contenedor-firma-digital">
+              <div class="vista-firma-director" *ngIf="firmaDirector">
+                <img [src]="firmaDirector.datos" [alt]="firmaDirector.nombre" class="imagen-firma">
+              </div>
+              <div class="sin-firma" *ngIf="!firmaDirector">
+                <p>Sin firma seleccionada</p>
+              </div>
+              <button type="button" 
+                      (click)="abrirSelectorFirmaDirector()" 
+                      class="btn-seleccionar-firma">
+                {{ firmaDirector ? 'Cambiar Firma' : 'Seleccionar Firma' }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -657,10 +682,25 @@
       NO ES VALIDO SI PRESENTA TACHADURA, BORRADURA O ALGÚN TIPO DE ALTERACIÓN O SI FALTA ALGUNA FIRMA O SELLO<br>
       COPIA 1 CRONOLÓGICO | COPIA 2 SOLICITANTE
     </div>
-
     <!-- FOOTER IMPRESIÓN -->
     <div style="text-align: center; margin-top: 30px; font-size: 10pt; color: #666; font-style: italic;">
       Documento impreso el {{ fechaImpresion }} a las {{ horaImpresion }}
     </div>
   </div>
 </div>
+
+<!-- SELECTOR DE FIRMA DIGITAL -->
+<app-selector-firma 
+  [mostrarSelector]="mostrarSelectorFirma"
+  (firmaSeleccionada)="onFirmaSeleccionada($event)"
+  (cerrarSelector)="cerrarSelectorFirma()">
+</app-selector-firma>
+
+<!-- MODAL -->
+<app-modal 
+  [visible]="modalState?.visible || false" 
+  [mensaje]="modalState?.mensaje || ''" 
+  [tipo]="modalState?.tipo || 'info'" 
+  [esConfirmacion]="modalState?.esConfirmacion || false" 
+  (close)="modalService.cerrar()">
+</app-modal>
