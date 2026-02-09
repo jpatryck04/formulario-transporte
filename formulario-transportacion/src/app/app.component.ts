@@ -10,14 +10,14 @@ import { RequisicionTransporteComponent } from './requisicion-transporte/requisi
     <div class="app-container">
       <header class="app-header">
         <h1>Sistema de Requisiciones de Transporte</h1>
-        <p>Gobierno de la República Dominicana - Salud Pública</p>
+        <p>Gobierno de la República Dominicana - Ministerio de Salud Pública</p>
       </header>
       <main>
         <app-requisicion-transporte></app-requisicion-transporte>
       </main>
       <footer class="app-footer">
-        <p>DIRECCIÓN ADMINISTRATIVA Y FINANCIERA - Departamento Administrativo</p>
-        <p>© 2024 - Todos los derechos reservados</p>
+        <p>MINISTERIO DE SALUD PUBLICA Y ASISTENCIA SOCIAL - Departamento Administrativo</p>
+        <p>© 2026 - Todos los derechos reservados</p>
       </footer>
     </div>
   `,
@@ -29,7 +29,7 @@ import { RequisicionTransporteComponent } from './requisicion-transporte/requisi
     }
     
     .app-header {
-      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      background: linear-gradient(135deg, #1F3C73 0%, #1F3C73 100%);
       color: white;
       padding: 1rem;
       text-align: center;
@@ -53,7 +53,7 @@ import { RequisicionTransporteComponent } from './requisicion-transporte/requisi
     }
     
     .app-footer {
-      background-color: #2c3e50;
+      background-color: #1F3C73;
       color: white;
       text-align: center;
       padding: 1rem;

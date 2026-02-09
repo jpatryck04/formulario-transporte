@@ -85,40 +85,102 @@
   margin-bottom: 30px;
   padding-bottom: 15px;
   border-bottom: 3px solid #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo-container {
   margin: 10px auto 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo-gobierno {
-  max-width: 200px;
+  max-width: 500px;
   height: auto;
 }
 
 .informacion-gobierno {
   margin: 10px 0;
+  font-family: 'Georgia', 'Garamond', serif;
 }
 
 .informacion-gobierno h2 {
   color: #2c3e50;
-  margin: 5px 0;
-  font-size: 16px;
+  margin: 8px 0;
+  font-size: 20px;
   font-weight: bold;
+  letter-spacing: 0.5px;
+  font-family: 'Georgia', 'Garamond', serif;
 }
 
 .titulo-formulario {
   color: #000;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   margin: 15px 0;
   text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Georgia', 'Garamond', serif;
 }
 
-/* SECCIONES CON DISTRIBUCIÓN EXACTA */
+/* SECCIONES CON DISTRIBUCIÓN EXACTA - ESTILO UNIFICADO */
 .seccion-documento {
-  margin-bottom: 20px;
+  margin-bottom: 28px;
   page-break-inside: avoid;
+  background: #f8f9fa;
+  padding: 15px;
+  border-left: 4px solid;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Colores diferentes para cada sección */
+.seccion-documento:nth-of-type(1) {
+  border-left-color: #1F3C73; /* Azul para Datos Básicos */
+}
+
+.seccion-documento:nth-of-type(2) {
+  border-left-color: #1F3C73; /* Verde para Datos del Vehículo */
+}
+
+.seccion-combustible {
+  border-left-color: #f39c12 !important; /* Naranja para Combustible */
+}
+
+.seccion-documento:nth-of-type(4) {
+  border-left-color: #1F3C73; /* Morado para Mantenimiento */
+}
+
+.seccion-documento:nth-of-type(5) {
+  border-left-color: #1F3C73; /* Turquesa para Sustitución */
+}
+
+.seccion-documento:nth-of-type(6) {
+  border-left-color: #1F3C73; /* Naranja oscuro para Reparación */
+}
+
+.seccion-documento:nth-of-type(7) {
+  border-left-color: #1F3C73; /* Gris azulado para Tipo de Vehículo */
+}
+
+.seccion-documento:nth-of-type(8) {
+  border-left-color: #1F3C73; /* Rojo para Transporte de Pasajeros */
+}
+
+.seccion-documento:nth-of-type(9) {
+  border-left-color: #1F3C73; /* Verde azulado para Detalles del Viaje */
+}
+
+.seccion-documento:nth-of-type(10) {
+  border-left-color: #1F3C73; /* Morado oscuro para Observaciones */
+}
+
+.seccion-firmas {
+  border-left-color: #2c55a0 !important; /* Azul oscuro para Firmas */
+  border-top: 2px solid #2c55a0;
 }
 
 .titulo-seccion {
@@ -199,13 +261,6 @@
 }
 
 /* ESTILOS ESPECÍFICOS PARA COMBUSTIBLE */
-.seccion-combustible {
-  background: #f8f9fa;
-  border-left: 4px solid #f39c12;
-  padding: 15px;
-  margin-bottom: 20px;
-}
-
 .opciones-inline {
   display: flex;
   gap: 20px;
@@ -222,39 +277,79 @@
 }
 
 /* ESTILO ESPECIAL PARA PASAJEROS - NÚMERO SOBRE LÍNEA */
+/* ESTILO ESPECIAL PARA PASAJEROS - NÚMERO SOBRE LÍNEA */
+.fila-pasajeros-completa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 0;
+  font-size: 14px;
+  gap: 20px;
+}
+
+.pasajeros-izquierda {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.pasajeros-derecha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.titulo-pasajeros {
+  font-weight: bold;
+  font-size: 14px;
+}
+
 .contenedor-pasajeros-especial {
   display: flex;
   align-items: center;
-  margin: 10px 0;
-  font-size: 13px;
+  justify-content: flex-start;
+  margin: 12px 0 15px 0;
+  font-size: 14px;
+  gap: 15px;
 }
 
 .numero-sobre-linea-especial {
   position: relative;
-  display: inline-block;
-  margin: 0 10px;
+  display: inline-flex;
+  align-items: flex-end;
+  margin: 0;
   text-align: center;
+  flex-direction: column;
+  min-width: 90px;
+  height: 30px;
 }
 
 .linea-puntos-especial {
   display: inline-block;
-  width: 100px;
-  letter-spacing: 3px;
-  font-size: 16px;
+  width: 90px;
+  letter-spacing: 4px;
+  font-size: 18px;
   color: #000;
-  opacity: 0.7;
+  opacity: 0.8;
+  border-bottom: 1px solid #000;
+  padding-bottom: 2px;
 }
 
 .numero-encima-especial {
   position: absolute;
-  top: -18px;
-  left: 0;
-  width: 100%;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
   text-align: center;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   color: #000;
   background: white;
+  padding: 0 5px;
+  min-width: 30px;
 }
 
 .input-cantidad-pasajeros {
@@ -267,13 +362,6 @@
 }
 
 /* SECCIÓN DE FIRMAS */
-.seccion-firmas {
-  margin-top: 30px;
-  padding: 20px;
-  background: #f8f9fa;
-  border-top: 2px solid #2c3e50;
-}
-
 .area-firma {
   margin-bottom: 25px;
 }
@@ -318,12 +406,12 @@
 }
 
 .btn-imprimir {
-  background: #2c3e50;
+  background: #1F3C73;
   color: white;
 }
 
 .btn-limpiar {
-  background: #95a5a6;
+  background: #5c0a0a;
   color: white;
 }
 
@@ -348,160 +436,147 @@
 /* VISTA DE IMPRESIÓN EXACTA COMO PDF */
 /* =========================================== */
 @media print {
-  /* OCULTAR TODO LO NO NECESARIO */
-  .modulo-entrada-derecha,
-  .botones-accion,
-  .advertencia-documento,
-  input,
-  textarea,
-  button,
-  .campo-input-linea,
-  .campo-textarea-lineas,
-  .input-cantidad-pasajeros {
-    display: none !important;
-  }
-  
-  /* ESTILOS GENERALES DE IMPRESIÓN */
-  body {
-    margin: 0 !important;
-    padding: 0 !important;
-    background: white !important;
-    font-family: 'Times New Roman', serif !important;
-    font-size: 11pt !important;
-  }
-  
-  .formulario-container {
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0.5in !important;
-    box-shadow: none !important;
-    border: none !important;
-  }
-  
-  /* ENCABEZADO DE IMPRESIÓN */
-  .encabezado-principal {
-    border-bottom: 2px solid #000 !important;
-    margin-bottom: 20px !important;
-    padding-bottom: 10px !important;
-  }
-  
-  .logo-gobierno {
-    max-width: 150px !important;
-    filter: grayscale(100%) !important;
-  }
-  
-  .informacion-gobierno h2 {
-    font-size: 12pt !important;
-    margin: 2px 0 !important;
-  }
-  
-  .titulo-formulario {
-    font-size: 14pt !important;
-    margin: 10px 0 !important;
-  }
-  
-  /* MOSTRAR VALORES EN IMPRESIÓN */
-  .valor-impresion {
-    display: inline-block !important;
-    border-bottom: 1px solid #000 !important;
-    min-width: 150px !important;
-    padding: 0 5px !important;
-    margin-left: 10px !important;
-    font-family: 'Courier New', monospace !important;
-  }
-  
-  .valor-impresion-vacio {
-    display: inline-block !important;
-    border-bottom: 1px solid #000 !important;
-    min-width: 150px !important;
-    height: 18px !important;
-    margin-left: 10px !important;
-  }
-  
-  /* SECCIONES EN IMPRESIÓN */
-  .seccion-documento {
-    border: none !important;
-    background: white !important;
-    padding: 0 !important;
-    margin-bottom: 15px !important;
-  }
-  
-  .seccion-combustible {
-    background: white !important;
-    border-left: 3px solid #000 !important;
-    padding: 10px !important;
-  }
-  
-  /* PASAJEROS EN IMPRESIÓN - NÚMERO SOBRE LÍNEA */
-  .impresion-pasajeros-contenedor {
-    display: inline-block !important;
-    position: relative !important;
-    margin: 0 10px !important;
-    vertical-align: middle !important;
-  }
-  
-  .impresion-linea-puntos {
-    display: inline-block !important;
-    width: 120px !important;
-    letter-spacing: 4px !important;
-    font-size: 14pt !important;
-    color: #000 !important;
-    opacity: 0.8 !important;
-  }
-  
-  .impresion-numero-arriba {
-    position: absolute !important;
-    top: -15px !important;
-    left: 0 !important;
-    width: 100% !important;
-    text-align: center !important;
-    font-size: 16pt !important;
-    font-weight: bold !important;
-    color: #000 !important;
-    background: white !important;
-    padding: 0 5px !important;
-  }
-  
-  /* FIRMAS EN IMPRESIÓN */
-  .impresion-area-firma {
-    margin: 40px 0 20px 0 !important;
-  }
-  
-  .impresion-linea-firma {
-    border-top: 1px solid #000 !important;
-    margin: 40px 0 5px 0 !important;
-    width: 100% !important;
-  }
-  
-  .impresion-texto-firma {
-    font-size: 10pt !important;
-    text-align: center !important;
-    font-style: italic !important;
-  }
-  
-  /* DISTRIBUCIÓN EN COLUMNAS PARA IMPRESIÓN */
-  .impresion-fila-2-columnas {
-    display: flex !important;
-    justify-content: space-between !important;
-    margin-bottom: 10px !important;
-  }
-  
-  .impresion-columna {
-    flex: 1;
-    padding: 0 10px;
-  }
-  
-  /* EVITAR SALTO DE PÁGINA */
-  .no-romper-pagina {
-    page-break-inside: avoid !important;
-  }
-  
-  /* MOSTRAR ETIQUETAS DE IMPRESIÓN */
-  .impresion-etiqueta {
-    font-weight: bold !important;
-    display: inline-block !important;
-    min-width: 120px !important;
-  }
+  * { margin: 0; padding: 0; }
+  body, html { width: 100%; height: 100%; background: white; }
+  .formulario-container > form, .formulario-container > .encabezado-principal,
+  .formulario-container > .modulo-entrada-derecha, .formulario-container > .botones-accion,
+  input, textarea, button, app-selector-firma, app-modal { display: none !important; }
+
+  .formulario-container { max-width: 100%; width: 100%; margin: 0; padding: 0.25in; box-shadow: none; border: none; }
+
+  /* ENCABEZADO */
+  .print-encabezado { display: flex; gap: 15px; align-items: center; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 8px; }
+  .print-logo-section { flex-shrink: 0; }
+  .print-logo { max-width: 80px; height: auto; }
+  .print-gobierno-info { flex: 1; text-align: center; }
+  .print-ministerio, .print-direccion, .print-departamento { font-size: 8pt; margin: 1px 0; font-weight: bold; font-family: Arial, sans-serif; }
+  .print-entrada-info { display: flex; flex-direction: column; gap: 2px; text-align: right; flex-shrink: 0; }
+  .print-entrada-item { display: flex; gap: 5px; font-size: 7pt; }
+  .print-entrada-label { font-weight: bold; min-width: 90px; }
+  .print-entrada-valor { border-bottom: 1px solid #000; min-width: 80px; padding: 0 2px; }
+
+  /* TÍTULO */
+  .print-titulo { font-size: 11pt; font-weight: bold; text-align: center; margin: 6px 0; font-family: Arial, sans-serif; }
+
+  /* SECCIONES */
+  .print-seccion { margin-bottom: 6px; font-size: 8pt; font-family: Arial, sans-serif; page-break-inside: avoid; }
+  .print-seccion-header { font-weight: bold; margin-bottom: 3px; font-size: 8pt; }
+
+  /* FILAS Y CAMPOS */
+  .print-fila { display: flex; gap: 10px; align-items: center; margin-bottom: 3px; flex-wrap: wrap; }
+  .print-grupo { display: flex; gap: 8px; margin-bottom: 3px; flex-wrap: wrap; }
+  .print-campo-pequeno { display: flex; gap: 3px; align-items: center; flex: 0 1 22%; }
+  .print-campo-amplio { display: flex; gap: 3px; align-items: center; flex: 0 1 50%; }
+
+  /* ETIQUETAS */
+  .print-etiqueta-grande { font-weight: bold; font-size: 8pt; white-space: nowrap; }
+  .print-etiqueta-pequena { font-weight: bold; font-size: 7pt; white-space: nowrap; }
+  .print-etiqueta { font-weight: bold; font-size: 7pt; }
+
+  /* LÍNEAS */
+  .print-linea-entrada { flex: 1; min-width: 100px; border-bottom: 1px solid #000; }
+  .print-linea-fecha { min-width: 80px; border-bottom: 1px solid #000; }
+  .print-linea-pequena { border-bottom: 1px solid #000; padding: 0 2px; min-width: 60px; display: inline-block; }
+  .print-linea-pequeña { border-bottom: 1px solid #000; padding: 0 2px; min-width: 80px; display: inline-block; }
+  .print-linea { border-bottom: 1px solid #000; padding: 0 2px; min-width: 100px; display: inline-block; }
+  .print-linea-larga { display: block; border-bottom: 1px solid #000; padding: 0 2px; min-height: 12pt; }
+
+  /* SUBSECCIONES */
+  .print-subseccion { margin-left: 10px; margin-bottom: 3px; }
+  .print-subseccion-titulo { font-weight: bold; font-size: 7pt; display: inline; }
+
+  /* OBSERVACIONES */
+  .print-observaciones { border: 1px solid #000; padding: 4px; min-height: 40px; font-size: 7pt; }
+
+  /* PASAJEROS */
+  .print-fila-pasajeros { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 24px; }
+  .print-numero-linea { position: relative; display: inline-flex; align-items: flex-end; min-width: 60px; }
+  .print-linea-numero { border-bottom: 1px solid #000; width: 100%; min-height: 12pt; }
+  .print-numero-arriba { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 9pt; font-weight: bold; background: white; padding: 0 2px; }
+
+  /* FIRMAS */
+  .print-seccion-firmas { margin-top: 20px; border-top: 2px solid #000; padding-top: 15px; }
+  .print-firmas-doble { display: flex; gap: 40px; justify-content: space-between; align-items: flex-start; }
+  .print-firma-lado { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; width: 48%; }
+  .print-etiqueta-firma { font-weight: bold; font-size: 8pt; text-align: center; margin-bottom: 4px; height: 16px; display: flex; align-items: center; }
+  .print-etiqueta-cargo-pequena { font-weight: bold; font-size: 6pt; text-align: center; margin-top: 6px; }
+  .print-firma-espacio { width: 100%; height: 50px; border-bottom: 2px solid #000; display: flex; align-items: flex-end; justify-content: center; background: white; padding-bottom: 4px; }
+  .print-firma-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .print-firma-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .print-linea-firma { width: 100%; height: 0px; background: transparent; }
+  .print-firma-nombre { border-bottom: 1px solid #000; padding: 2px 8px; min-width: 120px; text-align: center; font-size: 6pt; margin: 0; }
+
+  /* FOOTER */
+  .print-footer { margin-top: 8px; padding-top: 8px; border-top: 1px solid #000; text-align: center; font-size: 6pt; }
+  .print-advertencia { font-weight: bold; font-size: 6pt; margin-bottom: 2px; }
+  .print-copias { font-size: 6pt; margin-bottom: 2px; }
+  .print-fecha-impresion { font-size: 6pt; font-style: italic; margin: 0; }
+
+  @page { margin: 0.25in; size: letter; }
+}
+/* =========================================== */
+/* VISTA DE IMPRESIÓN MODERNA Y ELEGANTE */
+/* =========================================== */
+@media print {
+  * { margin: 0; padding: 0; }
+  body, html { background: white; }
+  .formulario-container > form, .formulario-container > .encabezado-principal,
+  .formulario-container > .modulo-entrada-derecha, .formulario-container > .botones-accion,
+  input, textarea, button, app-selector-firma, app-modal { display: none !important; }
+
+  .formulario-container { padding: 0.4in; box-shadow: none; border: none; }
+  .vista-impresion { display: flex !important; flex-direction: column; gap: 12px; }
+
+  .print-header { display: flex !important; gap: 15px; align-items: flex-start; 
+    border-bottom: 2px solid #1F3C73; padding-bottom: 12px; margin-bottom: 12px; }
+  .print-logo-section { display: flex !important; gap: 12px; align-items: center; }
+  .print-logo { max-width: 100px; height: auto; flex-shrink: 0; }
+  .print-header-text h1 { font-size: 13pt; font-weight: bold; color: #1F3C73; 
+    margin: 0; line-height: 1.2; }
+  .print-ministry { font-size: 9pt; color: #2c55a0; margin: 1px 0; font-weight: bold; }
+  .print-subtitle { font-size: 8pt; color: #555; margin: 1px 0; }
+
+  .print-info-box { display: flex !important; flex-direction: column; gap: 3px; 
+    background: #f8f9fa; padding: 6px 10px; border-left: 3px solid #1F3C73; }
+  .print-info-row { display: flex !important; font-size: 8pt; gap: 8px; }
+  .print-label { font-weight: bold; color: #1F3C73; }
+  .print-value { border-bottom: 1px solid #999; flex: 1; text-align: right; }
+
+  .print-content { display: flex !important; gap: 12px; }
+  .print-column { flex: 1; display: flex !important; flex-direction: column; gap: 10px; }
+
+  .print-card { border: 1px solid #ddd; padding: 8px; page-break-inside: avoid; }
+  .print-card-title { font-size: 9pt; font-weight: bold; color: #1F3C73; 
+    margin: 0 0 6px 0; border-bottom: 1px solid #ddd; padding-bottom: 3px; }
+
+  .print-field-grid { display: flex !important; flex-direction: column; gap: 4px; }
+  .print-field-item { display: flex !important; flex-direction: column; gap: 1px; font-size: 8pt; }
+  .print-field-item label { font-weight: bold; font-size: 7pt; text-transform: uppercase; }
+  .print-field-item span { border-bottom: 1px solid #999; padding: 2px; min-height: 12px; }
+
+  .print-services { display: flex !important; flex-direction: column; gap: 4px; font-size: 8pt; }
+  .print-service-item { padding: 2px 4px; border-left: 2px solid #2c55a0; }
+
+  .print-obs-box { background: #f8f9fa; border: 1px solid #ddd; padding: 6px; 
+    font-size: 8pt; line-height: 1.3; min-height: 40px; }
+
+  .print-signatures { display: flex !important; gap: 15px; }
+  .print-signature-block { display: flex !important; flex-direction: column; 
+    align-items: center; gap: 4px; flex: 1; }
+  .print-signature-space { width: 100%; height: 50px; border: 1px solid #ddd; 
+    display: flex !important; align-items: center; justify-content: center; }
+  .print-signature-image img { max-height: 50px; object-fit: contain; }
+  .print-signature-line { width: 100%; height: 1px; background: #000; }
+  .print-signature-label { font-size: 7pt; font-weight: bold; color: #1F3C73; }
+  .print-signature-name { font-size: 7pt; border-bottom: 1px solid #999; width: 100%; }
+
+  .print-footer { border-top: 2px solid #1F3C73; padding-top: 8px; margin-top: 10px; }
+  .print-footer-warning { font-weight: bold; color: #c0392b; font-size: 7pt; }
+  .print-footer-divider { height: 1px; background: #ddd; margin: 4px 0; }
+  .print-footer-date { font-size: 7pt; color: #666; text-align: center; }
+
+  @page { margin: 0.5in; size: letter; }
+  .print-content { column-count: 2; column-gap: 12px; }
 }
 
 /* =========================================== */
@@ -552,6 +627,12 @@
   .logo-gobierno {
     max-width: 150px;
   }
+  
+  /* Ajustar padding en móviles */
+  .seccion-documento {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -582,4 +663,105 @@
     width: 100%;
     margin-top: 5px;
   }
+  
+  .seccion-documento {
+    padding: 10px;
+    border-left-width: 3px;
+  }
+  
+  .vista-firma-responsable,
+  .vista-firma-director {
+    max-width: 150px;
+    height: 70px;
+  }
+}
+
+/* ESTILOS PARA FIRMAS DIGITALES EN IMPRESIÓN */
+.firma-impresa-contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  background: #f9f9f9;
+}
+
+.firma-impresa {
+  max-width: 100%;
+  max-height: 90px;
+  object-fit: contain;
+}
+
+.contenedor-firma-digital {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  min-height: 120px;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.vista-firma-responsable,
+.vista-firma-director {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 180px;
+  height: 90px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  overflow: hidden;
+  background: white;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagen-firma {
+  max-width: 100%;
+  max-height: 90px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.sin-firma {
+  color: #999;
+  font-size: 13px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.btn-seleccionar-firma {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  width: auto;
+}
+
+.btn-seleccionar-firma:hover {
+  background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
+}
+
+.btn-seleccionar-firma:active {
+  transform: scale(0.98);
 }

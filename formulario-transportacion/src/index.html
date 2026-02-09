@@ -1,13 +1,118 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>FormularioTransportacion</title>
+  <title>Sistema de Requisiciones de Transportación - Gobierno</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
+  <!-- Viewport para responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <!-- Favicon personalizado con tu imagen PNG -->
+  <link rel="icon" type="image/png" href="logo-02.png">
+  
+  <!-- Iconos adicionales para diferentes dispositivos -->
+  <link rel="apple-touch-icon" sizes="180x180" href="logo-02.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="logo-02.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="logo-02.png">
+  
+  <!-- Meta tags para SEO y descripción -->
+  <meta name="description" content="Sistema de gestión de requisiciones de transportación para dependencias gubernamentales">
+  <meta name="keywords" content="transportación, requisiciones, gobierno, vehículos, formularios">
+  <meta name="author" content="Gobierno de la República Dominicana">
+  
+  <!-- Color del tema para navegadores móviles -->
+  <meta name="theme-color" content="#2c3e50">
+  
+  <!-- Open Graph para compartir en redes sociales -->
+  <meta property="og:title" content="Sistema de Requisiciones de Transportación">
+  <meta property="og:description" content="Formulario digital para gestión de requisiciones de servicios de transportación">
+  <meta property="og:image" content="logo-02.png">
+  <meta property="og:type" content="website">
+  
+  <!-- Estilos de carga inicial (opcional) -->
+  <style>
+    /* Estilos para la pantalla de carga */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+      overflow-x: hidden;
+    }
+    
+    /* Contenedor de carga mientras Angular se inicializa */
+    app-root {
+      display: block;
+      min-height: 100vh;
+    }
+    
+    /* Animación de carga sutil */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      color: white;
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+    
+    .loading-text {
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Ocultar la animación cuando la app cargue */
+    app-root:not(:empty) + .loading-overlay {
+      display: none;
+    }
+  </style>
 </head>
 <body>
+  <!-- Aplicación Angular -->
   <app-root></app-root>
+  
+  <!-- Overlay de carga (se oculta automáticamente) -->
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Iniciando Sistema de Requisiciones...</div>
+  </div>
+  
+  <!-- Script para ocultar la animación de carga -->
+  <script>
+    // Esperar a que Angular cargue la aplicación
+    window.addEventListener('load', function() {
+      // La animación se ocultará automáticamente cuando app-root tenga contenido
+      // Pero por si acaso, la ocultamos después de 3 segundos máximo
+      setTimeout(function() {
+        var loadingOverlay = document.querySelector('.loading-overlay');
+        if (loadingOverlay) {
+          loadingOverlay.style.display = 'none';
+        }
+      }, 3000);
+    });
+  </script>
 </body>
 </html>
