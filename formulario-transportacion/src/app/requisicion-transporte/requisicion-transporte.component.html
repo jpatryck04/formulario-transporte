@@ -19,7 +19,8 @@
     <div class="modulo-fila">
       <span class="modulo-label">POR:</span>
       <input type="text" 
-             formControlName="registradoPor" 
+             [(ngModel)]="registradoPor"
+             [ngModelOptions]="{standalone: true}"
              class="modulo-input-numero"
              placeholder="Nombre">
     </div>
@@ -243,26 +244,29 @@
 
     <!-- SECCIÓN 8: TRANSPORTE DE PASAJEROS - NUEVO DISEÑO -->
     <div class="seccion-documento">
-      <div class="subtitulo-seccion">
-        6- TRANSPORTE PARA 
-        <span class="numero-sobre-linea-especial">
-          <span class="linea-puntos-especial">______</span>
-          <span class="numero-encima-especial" *ngIf="formulario.value.cantidadPasajeros">
-            {{ formulario.value.cantidadPasajeros }}
+      <div class="fila-pasajeros-completa">
+        <div class="pasajeros-izquierda">
+          <span class="titulo-pasajeros">6- TRANSPORTE PARA</span>
+          <span class="numero-sobre-linea-especial">
+            <span class="linea-puntos-especial">______</span>
+            <span class="numero-encima-especial" *ngIf="formulario.value.cantidadPasajeros">
+              {{ formulario.value.cantidadPasajeros }}
+            </span>
           </span>
-        </span>
-        PASAJERO/S CANTIDAD:
-      </div>
-      
-      <div class="contenedor-pasajeros-especial">
-        <input type="number" 
-               formControlName="cantidadPasajeros" 
-               class="input-cantidad-pasajeros"
-               min="0"
-               max="99"
-               placeholder="0">
+          <span class="titulo-pasajeros">PASAJERO/S</span>
+        </div>
+        <div class="pasajeros-derecha">
+          <span class="titulo-pasajeros">CANTIDAD:</span>
+          <input type="number" 
+                 formControlName="cantidadPasajeros" 
+                 class="input-cantidad-pasajeros"
+                 min="0"
+                 max="99"
+                 placeholder="0">
+        </div>
       </div>
     </div>
+    
 
     <!-- SECCIÓN 9: DETALLES DEL VIAJE -->
     <div class="seccion-documento">
@@ -293,20 +297,20 @@
     <!-- SECCIÓN 11: RESPONSABLES Y FIRMAS -->
     <div class="seccion-documento seccion-firmas">
       <!-- Encabezados principales -->
-      <div class="fila-datos-2-columnas" style="margin-bottom: 50px;">
+      <div class="fila-datos-2-columnas" style="margin-bottom: 30px;">
         <div class="columna-datos" style="text-align: center;">
           <div class="campo-con-etiqueta">
-            <label style="text-align: center;">RESPONSABLE DEPENDENCIA</label>
+            <label style="text-align: center; font-weight: bold;">RESPONSABLE DEPENDENCIA</label>
           </div>
         </div>
         <div class="columna-datos" style="text-align: center;">
           <div class="campo-con-etiqueta">
-            <label style="text-align: center;">AUTORIZADO POR</label>
+            <label style="text-align: center; font-weight: bold;">DIRECTOR(A) ADMINISTRATIVO</label>
           </div>
         </div>
       </div>
 
-      <!-- Contenido principal -->
+      <!-- Contenido principal - NOMBRE -->
       <div class="fila-datos-2-columnas">
         <div class="columna-datos">
           <div class="campo-con-etiqueta">
@@ -316,7 +320,23 @@
                    class="campo-input-linea"
                    placeholder="">
           </div>
-          
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>NOMBRE</label>
+            <input type="text" 
+                   formControlName="directorAdministrativo" 
+                   class="campo-input-linea"
+                   style="margin-bottom: 30px;"
+                   placeholder="">
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido principal - CARGO -->
+      <div class="fila-datos-2-columnas">
+        <div class="columna-datos">
           <div class="campo-con-etiqueta">
             <label>CARGO</label>
             <input type="text" 
@@ -324,7 +344,15 @@
                    class="campo-input-linea"
                    placeholder="">
           </div>
-          
+        </div>
+        
+        <div class="columna-datos">
+        </div>
+      </div>
+
+      <!-- Contenido principal - FIRMA DIGITAL -->
+      <div class="fila-datos-2-columnas">
+        <div class="columna-datos">
           <div class="campo-con-etiqueta">
             <label>FIRMA DIGITAL</label>
             <div class="contenedor-firma-digital">
@@ -343,17 +371,9 @@
           </div>
         </div>
         
-        <div class="columna-datos" style="text-align: center;">
+        <div class="columna-datos">
           <div class="campo-con-etiqueta">
-            <label style="text-align: center;">DIRECTOR(A) ADMINISTRATIVO</label>
-            <input type="text" 
-                   formControlName="directorAdministrativo" 
-                   class="campo-input-linea"
-                   style="text-align: center;"
-                   placeholder="">
-          </div>
-          <div class="campo-con-etiqueta">
-            <label style="text-align: center;">FIRMA DIGITAL</label>
+            <label>FIRMA DIGITAL</label>
             <div class="contenedor-firma-digital">
               <div class="vista-firma-director" *ngIf="firmaDirector">
                 <img [src]="firmaDirector.datos" [alt]="firmaDirector.nombre" class="imagen-firma">
@@ -374,7 +394,7 @@
 
     <!-- ADVERTENCIA FINAL -->
     <div class="advertencia-documento">
-      NO ES VALIDO SI PRESENTA TACHADURA, BORRADURA O ALGÚN TIPO DE ALTERACIÓN O SI FALTA ALGUNA FIRMA O SELLO<br>
+      <strong>NO ES VALIDO SI PRESENTA TACHADURA, BORRADURA O ALGÚN TIPO DE ALTERACIÓN O SI FALTA ALGUNA FIRMA O SELLO</strong><br>
       COPIA 1 CRONOLÓGICO | COPIA 2 SOLICITANTE
     </div>
 
@@ -388,303 +408,232 @@
 
   <!-- VISTA DE IMPRESIÓN EXACTA -->
   <div class="vista-impresion" [style.display]="modoImpresion ? 'block' : 'none'">
-    <!-- ENCABEZADO IMPRESIÓN -->
-    <div class="encabezado-principal no-romper-pagina">
-      <div class="logo-container">
-        <img src="logo-02.png" alt="Logo" class="logo-gobierno">
+    
+    <!-- ENCABEZADO OFICIAL -->
+    <div class="print-encabezado">
+      <div class="print-logo-section">
+        <img src="logo-02.png" alt="Logo" class="print-logo">
       </div>
-      
-      <div class="informacion-gobierno">
-        <h2>GOBIERNO DE LA REPÚBLICA DOMINICANA</h2>
-        <h2>DIRECCIÓN ADMINISTRATIVA Y FINANCIERA</h2>
-        <p>Departamento Administrativo</p>
+      <div class="print-gobierno-info">
+        <p class="print-ministerio">GOBIERNO DE LA REPÚBLICA DOMINICANA</p>
+        <p class="print-direccion">DIRECCIÓN ADMINISTRATIVA Y FINANCIERA</p>
+        <p class="print-departamento">Departamento Administrativo</p>
       </div>
-      
-      <div class="titulo-formulario">
-        REQUISICIÓN DE SERVICIOS DE TRANSPORTACIÓN
-      </div>
-    </div>
-
-    <!-- DATOS DE ENTRADA IMPRESIÓN -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">No. DE ENTRADA:</span>
-          <span class="valor-impresion">{{ numeroEntrada }}</span>
+      <div class="print-entrada-info">
+        <div class="print-entrada-item">
+          <span class="print-entrada-label">No. DE ENTRADA:</span>
+          <span class="print-entrada-valor">{{ numeroEntrada }}</span>
         </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">FECHA:</span>
-          <span class="valor-impresion">{{ fechaImpresion }}</span>
+        <div class="print-entrada-item">
+          <span class="print-entrada-label">FECHA:</span>
+          <span class="print-entrada-valor">{{ fechaImpresion }}</span>
         </div>
-      </div>
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">HORA:</span>
-          <span class="valor-impresion">{{ horaImpresion }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">POR:</span>
-          <span class="valor-impresion">{{ formulario.value.registradoPor || '' }}</span>
+        <div class="print-entrada-item">
+          <span class="print-entrada-label">HORA:</span>
+          <span class="print-entrada-valor">{{ horaImpresion }}</span>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 1 IMPRESIÓN -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">FECHA:</span>
-          <span class="valor-impresion">{{ formulario.value.fecha || '' }}</span>
+    <!-- TÍTULO -->
+    <h1 class="print-titulo">REQUISICIÓN DE SERVICIOS DE TRANSPORTACIÓN</h1>
+
+    <!-- SECCIÓN 1: DATOS GENERALES -->
+    <div class="print-seccion">
+      <div class="print-fila">
+        <span class="print-etiqueta-grande">DEPENDENCIA SOLICITANTE:</span>
+        <span class="print-linea-entrada">{{ formulario.value.dependencia || '________________________' }}</span>
+        <span class="print-etiqueta-pequena">FECHA:</span>
+        <span class="print-linea-fecha">{{ formulario.value.fecha || '__________________' }}</span>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: DATOS DEL VEHÍCULO -->
+    <div class="print-seccion">
+      <div class="print-grupo">
+        <div class="print-campo-pequeno">
+          <span class="print-etiqueta-pequena">FICHA:</span>
+          <span class="print-linea-pequena">{{ formulario.value.ficha || '__________' }}</span>
         </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">HORA:</span>
-          <span class="valor-impresion">{{ formulario.value.hora || '' }}</span>
+        <div class="print-campo-pequeno">
+          <span class="print-etiqueta-pequena">PLACA:</span>
+          <span class="print-linea-pequena">{{ formulario.value.placa || '__________' }}</span>
+        </div>
+        <div class="print-campo-pequeno">
+          <span class="print-etiqueta-pequena">MARCA:</span>
+          <span class="print-linea-pequena">{{ formulario.value.marca || '__________' }}</span>
+        </div>
+        <div class="print-campo-pequeno">
+          <span class="print-etiqueta-pequena">MODELO:</span>
+          <span class="print-linea-pequena">{{ formulario.value.modelo || '__________' }}</span>
         </div>
       </div>
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">DEPENDENCIA:</span>
-          <span class="valor-impresion">{{ formulario.value.dependencia || '' }}</span>
+
+      <div class="print-grupo">
+        <div class="print-campo-pequeno">
+          <span class="print-etiqueta-pequena">AÑO:</span>
+          <span class="print-linea-pequena">{{ formulario.value.anio || '______' }}</span>
+        </div>
+        <div class="print-campo-pequeno">
+          <span class="print-etiqueta-pequena">CHASSIS No.:</span>
+          <span class="print-linea-pequena">{{ formulario.value.chassis || '__________' }}</span>
+        </div>
+        <div class="print-campo-amplio">
+          <span class="print-etiqueta-pequena">CONDUCTOR:</span>
+          <span class="print-linea-pequeña">{{ formulario.value.conductor || '__________' }}</span>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 2 IMPRESIÓN -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="titulo-seccion">DATOS DEL VEHÍCULO:</div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">FICHA:</span>
-          <span class="valor-impresion">{{ formulario.value.ficha || '' }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">PLACA:</span>
-          <span class="valor-impresion">{{ formulario.value.placa || '' }}</span>
-        </div>
-      </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">MARCA:</span>
-          <span class="valor-impresion">{{ formulario.value.marca || '' }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">MODELO:</span>
-          <span class="valor-impresion">{{ formulario.value.modelo || '' }}</span>
-        </div>
-      </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">AÑO:</span>
-          <span class="valor-impresion">{{ formulario.value.anio || '' }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">CHASSIS:</span>
-          <span class="valor-impresion">{{ formulario.value.chassis || '' }}</span>
+    <!-- SECCIÓN 3: INSUMO O SERVICIO SOLICITADO -->
+    <div class="print-seccion">
+      <h3 class="print-subtitulo">INSUMO O SERVICIO SOLICITADO:</h3>
+
+      <div class="print-subseccion">
+        <span class="print-subseccion-titulo">1- COMBUSTIBLE:</span>
+        <div class="print-grupo">
+          <div class="print-campo-pequeno">
+            <span class="print-etiqueta-pequena">TIPO:</span>
+            <span class="print-linea-pequena">
+              <span *ngIf="formulario.value.gasolina">GASOLINA</span>
+              <span *ngIf="formulario.value.gasOil">GAS OIL</span>
+              <span *ngIf="!formulario.value.gasolina && !formulario.value.gasOil">___________</span>
+            </span>
+          </div>
+          <div class="print-campo-pequeno">
+            <span class="print-etiqueta-pequena">CANTIDAD:</span>
+            <span class="print-linea-pequena">{{ formulario.value.galones || '_____' }}</span>
+          </div>
+          <div class="print-campo-pequeño">
+            <span class="print-etiqueta-pequena">DOP:</span>
+            <span class="print-linea-pequena">{{ formulario.value.dop || '__________' }}</span>
+          </div>
+          <div class="print-campo-pequeno">
+            <span class="print-etiqueta-pequena">APROBADO:</span>
+            <span class="print-linea-pequeña">________</span>
+          </div>
         </div>
       </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">CONDUCTOR:</span>
-          <span class="valor-impresion">{{ formulario.value.conductor || '' }}</span>
+
+      <div class="print-subseccion">
+        <span class="print-subseccion-titulo">2- MANTENIMIENTO RUTINARIO:</span>
+        <span class="print-linea-larga">{{ formulario.value.mantenimientoRutinario || '___________________________________________________________________' }}</span>
+      </div>
+
+      <div class="print-subseccion">
+        <span class="print-subseccion-titulo">3- SUSTITUCIÓN DE GOMA/S BATERÍA CAPACIDAD:</span>
+        <span class="print-linea-larga">{{ formulario.value.sustitucion || '___________________________________________________________________' }}</span>
+      </div>
+
+      <div class="print-subseccion">
+        <span class="print-subseccion-titulo">4- REPARACIÓN DE:</span>
+        <span class="print-linea-larga">{{ formulario.value.reparacion || '___________________________________________________________________' }}</span>
+      </div>
+
+      <div class="print-subseccion">
+        <span class="print-subseccion-titulo">5- VEHÍCULO DE PASAJEROS:</span>
+        <div class="print-grupo">
+          <div class="print-campo-pequeno">
+            <span class="print-etiqueta-pequena">TIPO:</span>
+            <span class="print-linea-pequena">
+              <span *ngIf="formulario.value.carga">CARGA</span>
+              <span *ngIf="formulario.value.ambulancia">AMBULANCIA</span>
+              <span *ngIf="!formulario.value.carga && !formulario.value.ambulancia">____________</span>
+            </span>
+          </div>
+          <div class="print-campo-pequeno">
+            <span class="print-etiqueta-pequena">FECHA REC.:</span>
+            <span class="print-linea-pequena">{{ formulario.value.fechaRecepcion || '__________' }}</span>
+          </div>
+          <div class="print-campo-pequeño">
+            <span class="print-etiqueta-pequena">POR:</span>
+            <span class="print-linea-pequena">{{ formulario.value.recepcionPor || '__________' }}</span>
+          </div>
+        </div>
+        <div class="print-grupo">
+          <div class="print-campo-pequeno">
+            <span class="print-etiqueta-pequena">FECHA DEV.:</span>
+            <span class="print-linea-pequena">{{ formulario.value.fechaDevolucion || '__________' }}</span>
+          </div>
+          <div class="print-campo-amplio">
+            <span class="print-etiqueta-pequena">POR:</span>
+            <span class="print-linea-pequeña">{{ formulario.value.devolucionPor || '___________________' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="print-subseccion">
+        <div class="print-fila-pasajeros">
+          <span class="print-subseccion-titulo">6- TRANSPORTE PARA</span>
+          <div class="print-numero-linea">
+            <span class="print-numero-arriba" *ngIf="formulario.value.cantidadPasajeros">{{ formulario.value.cantidadPasajeros }}</span>
+            <span class="print-linea-numero"></span>
+          </div>
+          <span class="print-subseccion-titulo">PASAJERO/S CANTIDAD:</span>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 3 IMPRESIÓN -->
-    <div class="seccion-documento seccion-combustible no-romper-pagina">
-      <div class="titulo-seccion">INSUMO O SERVICIO SOLICITADO:</div>
-      <div class="subtitulo-seccion">1- COMBUSTIBLE:</div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">TIPO:</span>
-          <span class="valor-impresion">
-            <span *ngIf="formulario.value.gasolina">GASOLINA</span>
-            <span *ngIf="formulario.value.gasOil">GAS OIL</span>
-            <span *ngIf="!formulario.value.gasolina && !formulario.value.gasOil"></span>
-          </span>
-        </div>
+    <!-- SECCIÓN 4: VIAJE -->
+    <div class="print-seccion">
+      <div class="print-subseccion">
+        <span class="print-etiqueta-pequena">LUGAR/ES A VISITAR:</span>
+        <span class="print-linea-larga">{{ formulario.value.lugaresVisitar || '___________________________________________________________________' }}</span>
       </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">VALOR SOLICITADO:</span>
-          <span class="valor-impresion">{{ formulario.value.valorSolicitado || '' }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">GALONES:</span>
-          <span class="valor-impresion">{{ formulario.value.galones || '' }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">DOP:</span>
-          <span class="valor-impresion">{{ formulario.value.dop || '' }}</span>
-        </div>
+      <div class="print-subseccion">
+        <span class="print-etiqueta-pequena">ACTIVIDAD A REALIZAR:</span>
+        <span class="print-linea-larga">{{ formulario.value.actividadRealizar || '___________________________________________________________________' }}</span>
       </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">INCLUIDO EN:</span>
-          <span class="valor-impresion">
-            <span *ngIf="formulario.value.incluidoEn === 'asignacion'">ASIGNACIÓN</span>
-            <span *ngIf="formulario.value.incluidoEn === 'planTrabajo'">PLAN DE TRABAJO</span>
-          </span>
+      <div class="print-subseccion">
+        <span class="print-etiqueta-pequena">FECHA DEL VIAJE:</span>
+        <span class="print-linea">{{ formulario.value.fechaViaje || '__________________' }}</span>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 5: OBSERVACIONES -->
+    <div class="print-seccion">
+      <span class="print-etiqueta-pequena">OBSERVACIONES:</span>
+      <div class="print-observaciones">{{ formulario.value.observaciones || '' }}</div>
+    </div>
+
+    <!-- SECCIÓN 6: FIRMAS -->
+    <div class="print-seccion print-seccion-firmas">
+      <div class="print-firmas-doble">
+        <div class="print-firma-lado">
+          <span class="print-etiqueta-firma">RESPONSABLE DEPENDENCIA</span>
+          <span class="print-etiqueta-cargo-pequena">NOMBRE</span>
+          <p class="print-firma-nombre">{{ formulario.value.nombreResponsable || '_____________________' }}</p>
+          <span class="print-etiqueta-cargo-pequena">CARGO</span>
+          <p class="print-firma-nombre">{{ formulario.value.responsableDependencia || '_____________________' }}</p>
+          <span class="print-etiqueta-cargo-pequena">FIRMA</span>
+          <div class="print-firma-espacio">
+            <div *ngIf="firmaResponsable" class="print-firma-img">
+              <img [src]="firmaResponsable.datos" alt="Firma">
+            </div>
+            <div *ngIf="!firmaResponsable" class="print-linea-firma"></div>
+          </div>
+        </div>
+
+        <div class="print-firma-lado">
+          <span class="print-etiqueta-firma">DIRECTOR(A) ADMINISTRATIVO</span>
+          <span class="print-etiqueta-cargo-pequena">NOMBRE</span>
+          <p class="print-firma-nombre">{{ formulario.value.directorAdministrativo || '_____________________' }}</p>
+          <span class="print-etiqueta-cargo-pequena">FIRMA</span>
+          <div class="print-firma-espacio">
+            <div *ngIf="firmaDirector" class="print-firma-img">
+              <img [src]="firmaDirector.datos" alt="Firma">
+            </div>
+            <div *ngIf="!firmaDirector" class="print-linea-firma"></div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 4 IMPRESIÓN -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="subtitulo-seccion">2- MANTENIMIENTO RUTINARIO:</div>
-      <span class="valor-impresion" style="display: block; min-height: 40px;">
-        {{ formulario.value.mantenimientoRutinario || '' }}
-      </span>
-    </div>
-
-    <!-- SECCIÓN 5 IMPRESIÓN -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="subtitulo-seccion">3- SUSTITUCIÓN DE GOMA/S BATTERÍA CAPACIDAD:</div>
-      <span class="valor-impresion">{{ formulario.value.sustitucion || '' }}</span>
-    </div>
-
-    <!-- SECCIÓN 6 IMPRESIÓN -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="subtitulo-seccion">4- REPARACIÓN DE</div>
-      <span class="valor-impresion">{{ formulario.value.reparacion || '' }}</span>
-    </div>
-
-    <!-- SECCIÓN 7 IMPRESIÓN -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="subtitulo-seccion">5- VEHÍCULO DE PASAJEROS:</div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">TIPO:</span>
-          <span class="valor-impresion">
-            <span *ngIf="formulario.value.carga">CARGA </span>
-            <span *ngIf="formulario.value.ambulancia">AMBULANCIA</span>
-          </span>
-        </div>
-      </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">FECHA RECEPCIÓN:</span>
-          <span class="valor-impresion">{{ formulario.value.fechaRecepcion || '' }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">POR:</span>
-          <span class="valor-impresion">{{ formulario.value.recepcionPor || '' }}</span>
-        </div>
-      </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">FECHA DEVOLUCIÓN:</span>
-          <span class="valor-impresion">{{ formulario.value.fechaDevolucion || '' }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">POR:</span>
-          <span class="valor-impresion">{{ formulario.value.devolucionPor || '' }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN 8 IMPRESIÓN - PASAJEROS -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="subtitulo-seccion">
-        6- TRANSPORTE PARA 
-        <span class="impresion-pasajeros-contenedor">
-          <span class="impresion-linea-puntos">______</span>
-          <span class="impresion-numero-arriba" *ngIf="formulario.value.cantidadPasajeros">
-            {{ formulario.value.cantidadPasajeros }}
-          </span>
-        </span>
-        PASAJERO/S CANTIDAD:
-      </div>
-    </div>
-
-    <!-- SECCIÓN 9 IMPRESIÓN -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">LUGAR/ES A VISITAR:</span>
-          <span class="valor-impresion">{{ formulario.value.lugaresVisitar || '' }}</span>
-        </div>
-      </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">ACTIVIDAD A REALIZAR:</span>
-          <span class="valor-impresion">{{ formulario.value.actividadRealizar || '' }}</span>
-        </div>
-      </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">FECHA DEL VIAJE:</span>
-          <span class="valor-impresion">{{ formulario.value.fechaViaje || '' }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN 10 IMPRESIÓN -->
-    <div class="seccion-documento no-romper-pagina">
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">OBSERVACIONES:</span>
-          <span class="valor-impresion">{{ formulario.value.observaciones || '' }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN 11 IMPRESIÓN -->
-    <div class="seccion-documento seccion-firmas no-romper-pagina">
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">RESPONSABLE DEPENDENCIA:</span>
-          <span class="valor-impresion">{{ formulario.value.responsableDependencia || '' }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">NOMBRE:</span>
-          <span class="valor-impresion">{{ formulario.value.nombreResponsable || '' }}</span>
-        </div>
-      </div>
-      
-      <div class="impresion-fila-2-columnas">
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">DIRECTOR(A) ADMINISTRATIVO:</span>
-          <span class="valor-impresion">{{ formulario.value.directorAdministrativo || '' }}</span>
-        </div>
-        <div class="impresion-columna">
-          <span class="impresion-etiqueta">CARGO:</span>
-          <span class="valor-impresion">{{ formulario.value.cargo || '' }}</span>
-        </div>
-      </div>
-      
-      <!-- FIRMAS IMPRESIÓN -->
-      <div class="impresion-area-firma">
-        <div class="impresion-linea-firma"></div>
-        <div class="impresion-texto-firma">Firma del Responsable</div>
-      </div>
-      
-      <div class="impresion-area-firma">
-        <div class="impresion-linea-firma"></div>
-        <div class="impresion-texto-firma">Firma del Director Administrativo</div>
-      </div>
-    </div>
-
-    <!-- ADVERTENCIA IMPRESIÓN -->
-    <div class="advertencia-documento no-romper-pagina">
-      NO ES VALIDO SI PRESENTA TACHADURA, BORRADURA O ALGÚN TIPO DE ALTERACIÓN O SI FALTA ALGUNA FIRMA O SELLO<br>
-      COPIA 1 CRONOLÓGICO | COPIA 2 SOLICITANTE
-    </div>
-    <!-- FOOTER IMPRESIÓN -->
-    <div style="text-align: center; margin-top: 30px; font-size: 10pt; color: #666; font-style: italic;">
-      Documento impreso el {{ fechaImpresion }} a las {{ horaImpresion }}
+    <!-- PIE DE PÁGINA -->
+    <div class="print-footer">
+      <p class="print-advertencia">NO ES VÁLIDO SI PRESENTA TACHADURA, BORRADURA O ALGÚN TIPO DE ALTERACIÓN O SI FALTA ALGUNA FIRMA O SELLO</p>
+      <p class="print-copias">COPIA 1 CRONOLÓGICO | COPIA 2 SOLICITANTE</p>
+      <p class="print-fecha-impresion">Impreso: {{ fechaImpresion }} - {{ horaImpresion }}</p>
     </div>
   </div>
 </div>

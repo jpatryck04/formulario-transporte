@@ -22,6 +22,7 @@ export class RequisicionTransporteComponent implements OnInit {
   firmaDirectorId: string | null = null;
   firmaResponsable: FirmaDigital | null = null;
   firmaDirector: FirmaDigital | null = null;
+  registradoPor = '';
   
   // Módulo de entrada
   numeroEntrada = this.generarNumeroEntrada();
@@ -118,6 +119,7 @@ export class RequisicionTransporteComponent implements OnInit {
       responsableDependencia: ['', Validators.required],
       nombreResponsable: ['', Validators.required],
       directorAdministrativo: ['', Validators.required],
+      directorCargo: [''],
       cargo: ['']
     });
   }
