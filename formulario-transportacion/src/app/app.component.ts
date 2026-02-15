@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RequisicionTransporteComponent } from './requisicion-transporte/requisicion-transporte.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RequisicionTransporteComponent],
+  imports: [CommonModule, RouterModule],
   template: `
     <div class="app-container">
       <header class="app-header">
@@ -13,7 +13,7 @@ import { RequisicionTransporteComponent } from './requisicion-transporte/requisi
         <p>Gobierno de la República Dominicana - Ministerio de Salud Pública</p>
       </header>
       <main>
-        <app-requisicion-transporte></app-requisicion-transporte>
+        <router-outlet></router-outlet>
       </main>
       <footer class="app-footer">
         <p>MINISTERIO DE SALUD PUBLICA Y ASISTENCIA SOCIAL - Departamento Administrativo</p>

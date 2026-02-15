@@ -1,0 +1,254 @@
+<div class="formulario-container">
+  <!-- ENCABEZADO DEL DOCUMENTO -->
+  <div class="encabezado-principal">
+    <div class="logo-container">
+      <img src="logo-02.png" alt="Logo Gobierno" class="logo-gobierno">
+    </div>
+    <div class="titulo-formulario">
+      <p>DIRECCIÓN ADMINISTRATIVA</p>
+      <p>SUB-GERENCIA DE TRANSPORTACIÓN</p>
+      <strong>SOLICITUD DE SERVICIO DE TRANSPORTE</strong>
+    </div>
+  </div>
+
+  <!-- FORMULARIO PRINCIPAL -->
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <!-- ID y Fecha -->
+    <div class="fila-encabezado">
+      <div class="campo-id">
+        <label>Id:</label>
+        <span class="valor-id">{{ idSolicitud }}</span>
+      </div>
+      <div class="campo-fecha">
+        <label>Fecha Solicitud:</label>
+        <input type="date" formControlName="fechaSolicitud" class="campo-input-linea">
+      </div>
+    </div>
+
+    <!-- SECCIÓN 1: DATOS BÁSICOS -->
+    <div class="seccion-documento">
+      <div class="fila-datos-3-columnas">
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>Dependencia:</label>
+            <input type="text" formControlName="dependencia" class="campo-input-linea">
+          </div>
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>Tipo de Servicio:</label>
+            <input type="text" formControlName="tipoServicio" class="campo-input-linea" placeholder="Ej: URGENTE, PROGRAMADO">
+          </div>
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>Cantidad de Personas:</label>
+            <input type="number" formControlName="cantidadPersonas" class="campo-input-linea" min="1">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: SALIDA -->
+    <div class="seccion-documento">
+      <div class="titulo-seccion">SALIDA:</div>
+      
+      <div class="fila-datos-3-columnas">
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>Fecha de Salida:</label>
+            <input type="date" formControlName="fechaSalida" class="campo-input-linea">
+          </div>
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>Hora de Salida:</label>
+            <input type="time" formControlName="horaSalida" class="campo-input-linea">
+          </div>
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>Punto de Salida:</label>
+            <input type="text" formControlName="puntoSalida" class="campo-input-linea" placeholder="Lugar de origen">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: LLEGADA -->
+    <div class="seccion-documento">
+      <div class="titulo-seccion">LLEGADA:</div>
+      
+      <div class="fila-datos-3-columnas">
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>Fecha de Llegada:</label>
+            <input type="date" formControlName="fechaLlegada" class="campo-input-linea">
+          </div>
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>Hora de Llegada:</label>
+            <input type="time" formControlName="horaLlegada" class="campo-input-linea">
+          </div>
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>Punto de Llegada:</label>
+            <input type="text" formControlName="puntoLlegada" class="campo-input-linea" placeholder="Lugar de destino">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 4: LUGARES A VISITAR -->
+    <div class="seccion-documento">
+      <div class="campo-con-etiqueta">
+        <label>Lugar(es) a Visitar:</label>
+        <textarea formControlName="lugaresVisitar" class="campo-textarea-lineas" rows="2" placeholder="Lista de lugares a visitar"></textarea>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 5: TRABAJO A REALIZAR -->
+    <div class="seccion-documento">
+      <div class="campo-con-etiqueta">
+        <label>Trabajo a Realizar:</label>
+        <textarea formControlName="trabajoRealizar" class="campo-textarea-lineas" rows="2" placeholder="Descripción del trabajo"></textarea>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 6: OBSERVACIONES -->
+    <div class="seccion-documento">
+      <div class="campo-con-etiqueta">
+        <label>Observaciones:</label>
+        <textarea formControlName="observaciones" class="campo-textarea-lineas" rows="2"></textarea>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 7: RESPONSABLES Y FIRMAS -->
+    <div class="seccion-documento seccion-firmas">
+      <div class="titulo-seccion">RESPONSABLE DEPENDENCIA</div>
+      
+      <div class="fila-datos-2-columnas">
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>NOMBRE:</label>
+            <input type="text" formControlName="nombreResponsable" class="campo-input-linea">
+          </div>
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>AUTORIZADO POR:</label>
+            <input type="text" formControlName="autorizadoPor" class="campo-input-linea">
+          </div>
+        </div>
+      </div>
+      
+      <div class="fila-datos-2-columnas">
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>CARGO:</label>
+            <input type="text" formControlName="cargoResponsable" class="campo-input-linea">
+          </div>
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>SELLO:</label>
+            <input type="text" formControlName="sello1" class="campo-input-linea">
+          </div>
+        </div>
+      </div>
+      
+      <div class="fila-datos-2-columnas">
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>FIRMA:</label>
+            <div class="contenedor-firma-digital">
+              <div class="vista-firma-responsable" *ngIf="firmaResponsable">
+                <img [src]="firmaResponsable.datos" alt="Firma" class="imagen-firma">
+              </div>
+              <div class="sin-firma" *ngIf="!firmaResponsable">
+                <p>Sin firma</p>
+              </div>
+              <button type="button" 
+                      (click)="abrirSelectorFirmaResponsable()" 
+                      class="btn-seleccionar-firma">
+                {{ firmaResponsable ? 'Cambiar' : 'Seleccionar' }}
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="columna-datos">
+          <div class="campo-con-etiqueta">
+            <label>SELLO:</label>
+            <input type="text" formControlName="sello2" class="campo-input-linea">
+          </div>
+        </div>
+      </div>
+      
+      <div class="fila-datos-1-columna">
+        <div class="campo-con-etiqueta">
+          <label>DIRECTOR ADMINISTRATIVO:</label>
+          <div class="fila-datos-2-columnas" style="align-items: center;">
+            <div style="flex: 2;">
+              <input type="text" formControlName="directorAdministrativo" class="campo-input-linea">
+            </div>
+            <div style="flex: 1; margin-left: 20px;">
+              <div class="contenedor-firma-digital">
+                <div class="vista-firma-director" *ngIf="firmaDirector">
+                  <img [src]="firmaDirector.datos" alt="Firma Director" class="imagen-firma">
+                </div>
+                <div class="sin-firma" *ngIf="!firmaDirector">
+                  <p>Sin firma</p>
+                </div>
+                <button type="button" 
+                        (click)="abrirSelectorFirmaDirector()" 
+                        class="btn-seleccionar-firma">
+                  {{ firmaDirector ? 'Cambiar' : 'Seleccionar' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADVERTENCIA FINAL -->
+    <div class="advertencia-documento">
+      <strong>NO ES VÁLIDO SI PRESENTA TACHADURA, BORRADURA O ALGÚN TIPO DE ALTERACIÓN O SI FALTA ALGUNA FIRMA O SELLO</strong><br>
+      ORIGINAL: CRONOLÓGICO | COPIA: TRANSPORTACIÓN / CONTROL - DESPACHO INSUMO
+    </div>
+
+    <!-- BOTONES DE ACCIÓN -->
+    <div class="botones-accion">
+      <button type="submit" class="btn-documento btn-guardar">GUARDAR SOLICITUD</button>
+      <button type="button" class="btn-documento btn-imprimir" (click)="imprimirFormulario()">IMPRIMIR</button>
+      <button type="button" class="btn-documento btn-limpiar" (click)="limpiarFormulario()">LIMPIAR</button>
+    </div>
+  </form>
+
+  <!-- SELECTOR DE FIRMA DIGITAL -->
+  <app-selector-firma 
+    [mostrarSelector]="mostrarSelectorFirma"
+    (firmaSeleccionada)="onFirmaSeleccionada($event)"
+    (cerrarSelector)="cerrarSelectorFirma()">
+  </app-selector-firma>
+
+  <!-- MODAL -->
+  <app-modal 
+    [visible]="modalState?.visible || false" 
+    [mensaje]="modalState?.mensaje || ''" 
+    [tipo]="modalState?.tipo || 'info'" 
+    [esConfirmacion]="modalState?.esConfirmacion || false" 
+    (close)="modalService.cerrar()">
+  </app-modal>
+</div>

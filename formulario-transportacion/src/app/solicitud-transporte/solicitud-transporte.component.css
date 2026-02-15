@@ -1,0 +1,367 @@
+/* ESTILOS PRINCIPALES */
+.formulario-container {
+  font-family: 'Arial', sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* ENCABEZADO PRINCIPAL */
+.encabezado-principal {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container {
+  margin: 10px auto 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-gobierno {
+  max-width: 500px;
+  height: auto;
+}
+
+.titulo-formulario {
+  color: #000;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 15px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Georgia', 'Garamond', serif;
+}
+
+.titulo-formulario p {
+  margin: 5px 0;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+/* FILA DE ENCABEZADO CON ID */
+.fila-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.campo-id {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.campo-id label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+.valor-id {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1F3C73;
+  padding: 5px 10px;
+  background: white;
+  border: 1px solid #1F3C73;
+  border-radius: 4px;
+}
+
+.campo-fecha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.campo-fecha label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+/* SECCIONES */
+.seccion-documento {
+  margin-bottom: 28px;
+  page-break-inside: avoid;
+  background: #f8f9fa;
+  padding: 15px;
+  border-left: 4px solid #1F3C73;
+  border-radius: 0 4px 4px 0;
+}
+
+.seccion-firmas {
+  border-left-color: #2c55a0 !important;
+  border-top: 2px solid #2c55a0;
+}
+
+.titulo-seccion {
+  font-weight: bold;
+  font-size: 14px;
+  color: #000;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 3px;
+}
+
+/* FILAS DE DATOS */
+.fila-datos-3-columnas {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.fila-datos-2-columnas {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.fila-datos-1-columna {
+  margin-bottom: 12px;
+}
+
+.columna-datos {
+  flex: 1;
+}
+
+/* CAMPOS DE ENTRADA */
+.campo-con-etiqueta {
+  margin-bottom: 10px;
+}
+
+.campo-con-etiqueta label {
+  display: block;
+  font-weight: bold;
+  font-size: 12px;
+  color: #000;
+  margin-bottom: 3px;
+}
+
+.campo-input-linea {
+  border: none;
+  border-bottom: 1px solid #000;
+  background: transparent;
+  padding: 5px 0;
+  font-size: 13px;
+  width: 100%;
+  font-family: 'Courier New', monospace;
+}
+
+.campo-input-linea:focus {
+  outline: none;
+  border-bottom-color: #3498db;
+}
+
+.campo-textarea-lineas {
+  border: 1px solid #000;
+  background: transparent;
+  padding: 8px;
+  font-size: 13px;
+  width: 100%;
+  min-height: 60px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* ESTILOS PARA FIRMAS DIGITALES */
+.contenedor-firma-digital {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  min-height: 100px;
+}
+
+.vista-firma-responsable,
+.vista-firma-director {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 180px;
+  height: 80px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  overflow: hidden;
+  background: white;
+}
+
+.imagen-firma {
+  max-width: 100%;
+  max-height: 80px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.sin-firma {
+  color: #999;
+  font-size: 13px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.btn-seleccionar-firma {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-seleccionar-firma:hover {
+  background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
+}
+
+/* ADVERTENCIA FINAL */
+.advertencia-documento {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  padding: 12px;
+  margin: 20px 0;
+  text-align: center;
+  font-size: 11px;
+  color: #856404;
+  font-weight: bold;
+}
+
+/* BOTONES DE ACCIÓN */
+.botones-accion {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 30px 0;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+}
+
+.btn-documento {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.btn-guardar {
+  background: #27ae60;
+  color: white;
+}
+
+.btn-imprimir {
+  background: #1F3C73;
+  color: white;
+}
+
+.btn-limpiar {
+  background: #5c0a0a;
+  color: white;
+}
+
+.btn-documento:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* VISTA DE IMPRESIÓN */
+@media print {
+  * { margin: 0; padding: 0; }
+  body, html { background: white; }
+  
+  .formulario-container > form,
+  .formulario-container > .botones-accion,
+  button, .btn-seleccionar-firma { display: none !important; }
+
+  .formulario-container { padding: 0.25in; max-width: 100%; }
+
+  .encabezado-principal {
+    border-bottom: 2px solid #000;
+    margin-bottom: 15px;
+  }
+
+  .seccion-documento {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    background: white;
+    border-left: 2px solid #000;
+    padding: 10px;
+  }
+
+  .campo-input-linea,
+  .campo-textarea-lineas {
+    border: none;
+    border-bottom: 1px solid #000;
+    background: transparent;
+  }
+
+  .advertencia-documento {
+    border: 1px solid #000;
+    background: transparent;
+    color: #000;
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .fila-datos-3-columnas,
+  .fila-datos-2-columnas {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .fila-encabezado {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .campo-id,
+  .campo-fecha {
+    width: 100%;
+  }
+
+  .valor-id {
+    width: 100%;
+    text-align: center;
+  }
+
+  .botones-accion {
+    flex-direction: column;
+  }
+
+  .btn-documento {
+    width: 100%;
+  }
+}
