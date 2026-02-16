@@ -1,10 +1,18 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ModalComponent } from '../shared/modal.component';
 import { ModalService, ModalState } from '../shared/modal.service';
 import { SelectorFirmaComponent } from '../shared/selector-firma.component';
 import { FirmaDigitalService, FirmaDigital } from '../shared/firma-digital.service';
+import { FormularioBaseService } from '../shared/formulario-base.service';
+import { ErrorHandlerService } from '../shared/error-handler.service';
+import { StorageService } from '../shared/storage.service';
+import { ValidadoresPersonalizados } from '../shared/validadores';
+import { ComponenteConCambios } from '../shared/cambios-no-guardados.guard';
+import { Subject, Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-requisicion-transporte',
@@ -13,18 +21,20 @@ import { FirmaDigitalService, FirmaDigital } from '../shared/firma-digital.servi
   templateUrl: './requisicion-transporte.component.html',
   styleUrls: ['./requisicion-transporte.component.css']
 })
-export class RequisicionTransporteComponent implements OnInit {
+export class RequisicionTransporteComponent implements OnInit, OnDestroy, ComponenteConCambios {
   formulario!: FormGroup;
   modoImpresion = false;
   modalState: ModalState | null = null;
   mostrarSelectorFirma = false;
+  cargando$!: Observable<boolean>;
+  cambios$!: Observable<boolean>;
+  
   firmaResponsableId: string | null = null;
   firmaDirectorId: string | null = null;
   firmaResponsable: FirmaDigital | null = null;
   firmaDirector: FirmaDigital | null = null;
   registradoPor = '';
   
-  // Módulo de entrada
   numeroEntrada = this.generarNumeroEntrada();
   fechaActual = new Date().toLocaleDateString('es-DO', {
     day: '2-digit',
@@ -33,29 +43,61 @@ export class RequisicionTransporteComponent implements OnInit {
   });
   horaActual = this.obtenerHoraActual();
   
-  // Impresión
   fechaImpresion = '';
   horaImpresion = '';
   
   private intervaloHora: any;
+  private destroy$ = new Subject<void>();
   selectorFirmaActivo: 'responsable' | 'director' | null = null;
+  datosOriginales: any = {};
 
   constructor(
     private fb: FormBuilder,
     public modalService: ModalService,
-    private firmaService: FirmaDigitalService
+    private firmaService: FirmaDigitalService,
+    private formularioBase: FormularioBaseService,
+    private errorHandler: ErrorHandlerService,
+    private storage: StorageService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.inicializarFormulario();
-    this.iniciarActualizacionHora();
-    this.subscripcionModalState();
-    this.cargarFirmasGuardadas();
+    try {
+      this.cargando$ = this.formularioBase.obtenerEstadoCargando();
+      this.cambios$ = this.formularioBase.obtenerEstadoCambios();
+      this.inicializarFormulario();
+      this.iniciarActualizacionHora();
+      this.subscripcionModalState();
+      this.cargarFirmasGuardadas();
+      this.monitorearCambios();
+      this.restaurarFormularioGuardado();
+    } catch (error) {
+      this.errorHandler.manejarError(error, 'Error al inicializar el formulario');
+    }
   }
 
   ngOnDestroy(): void {
     if (this.intervaloHora) {
       clearInterval(this.intervaloHora);
+    }
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  // Implementar interfaz ComponenteConCambios
+  tieneCambios(): boolean {
+    return this.formulario.dirty;
+  }
+
+  volverAlMenu(): void {
+    if (this.tieneCambios()) {
+      this.modalService.confirmar('¿Desea volver al menú? Sus cambios no guardados serán perdidos.').then((confirmado) => {
+        if (confirmado) {
+          this.router.navigate(['/']);
+        }
+      });
+    } else {
+      this.router.navigate(['/']);
     }
   }
 
@@ -77,13 +119,13 @@ export class RequisicionTransporteComponent implements OnInit {
 
   inicializarFormulario(): void {
     this.formulario = this.fb.group({
-      fecha: ['', Validators.required],
+      fecha: ['', [Validators.required, ValidadoresPersonalizados.fechaNoFutura()]],
       hora: ['', Validators.required],
       dependencia: ['', Validators.required],
       registradoPor: ['', Validators.required],
       
       ficha: [''],
-      placa: ['', Validators.required],
+      placa: ['', [Validators.required, ValidadoresPersonalizados.placaVehiculo()]],
       marca: [''],
       modelo: [''],
       anio: [''],
@@ -92,8 +134,8 @@ export class RequisicionTransporteComponent implements OnInit {
       
       gasolina: [false],
       gasOil: [false],
-      valorSolicitado: [''],
-      galones: [''],
+      valorSolicitado: ['', ValidadoresPersonalizados.numeroPositivo()],
+      galones: ['', ValidadoresPersonalizados.numeroPositivo()],
       dop: [''],
       incluidoEn: [''],
       
@@ -114,7 +156,7 @@ export class RequisicionTransporteComponent implements OnInit {
       actividadRealizar: [''],
       fechaViaje: [''],
       
-      observaciones: [''],
+      observaciones: ['', ValidadoresPersonalizados.longitudMaxima(500)],
       
       responsableDependencia: ['', Validators.required],
       nombreResponsable: ['', Validators.required],
@@ -122,6 +164,32 @@ export class RequisicionTransporteComponent implements OnInit {
       directorCargo: [''],
       cargo: ['']
     });
+
+    this.datosOriginales = this.formulario.value;
+  }
+
+  private monitorearCambios(): void {
+    this.formulario.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.formularioBase.marcarComoModificado();
+        this.guardarBorrador();
+      });
+  }
+
+  private restaurarFormularioGuardado(): void {
+    const borrador = this.storage.obtener<any>('borrador_requisicion');
+    if (borrador) {
+      this.formulario.patchValue(borrador);
+      this.modalService.mostrar('Se han restaurado los datos guardados anteriormente', 'info');
+    }
+  }
+
+  private guardarBorrador(): void {
+    const debounceTime = 2000; // Guardar cada 2 segundos
+    setTimeout(() => {
+      this.storage.guardar('borrador_requisicion', this.formulario.value);
+    }, debounceTime);
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -133,30 +201,37 @@ export class RequisicionTransporteComponent implements OnInit {
   }
 
   prepararImpresion(): void {
-    const camposRequeridos = ['fecha', 'dependencia', 'placa', 'conductor'];
-    const faltantes = camposRequeridos.filter(campo => !this.formulario.get(campo)?.value);
+    try {
+      const camposRequeridos = ['fecha', 'dependencia', 'placa', 'conductor'];
+      const faltantes = camposRequeridos.filter(campo => !this.formulario.get(campo)?.value);
 
-    if (faltantes.length > 0) {
-      alert(`Complete los campos requeridos: ${faltantes.join(', ')}`);
-      return;
-    }
+      if (faltantes.length > 0) {
+        this.errorHandler.manejarError(
+          `Complete los campos requeridos: ${faltantes.join(', ')}`,
+          'Validación de impresión'
+        );
+        return;
+      }
 
-    const ahora = new Date();
-    this.fechaImpresion = ahora.toLocaleDateString('es-DO', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
-    this.horaImpresion = this.obtenerHoraActual();
-    
-    this.modoImpresion = true;
-    
-    setTimeout(() => {
-      window.print();
+      const ahora = new Date();
+      this.fechaImpresion = ahora.toLocaleDateString('es-DO', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+      this.horaImpresion = this.obtenerHoraActual();
+      
+      this.modoImpresion = true;
+      
       setTimeout(() => {
-        this.modoImpresion = false;
+        window.print();
+        setTimeout(() => {
+          this.modoImpresion = false;
+        }, 100);
       }, 100);
-    }, 100);
+    } catch (error) {
+      this.errorHandler.manejarError(error, 'Error al preparar la impresión');
+    }
   }
 
   imprimirFormulario(): void {
@@ -164,7 +239,12 @@ export class RequisicionTransporteComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.formulario.valid) {
+    try {
+      if (!this.formularioBase.validarFormulario(this.formulario)) {
+        this.marcarCamposInvalidos();
+        return;
+      }
+
       const datosFormulario = {
         ...this.formulario.value,
         numeroEntrada: this.numeroEntrada,
@@ -172,14 +252,36 @@ export class RequisicionTransporteComponent implements OnInit {
         estado: 'pendiente'
       };
 
+      // Guardar localmente primero
       this.guardarEnStorage(datosFormulario);
+      this.formularioBase.guardarLocal('requisicion_' + this.numeroEntrada, datosFormulario);
       
-      alert('Requisición guardada correctamente');
+      // Crear respaldo
+      this.formularioBase.crearRespaldo('requisicion', datosFormulario);
+
+      // Intentar guardar en API si está disponible
+      // this.guardarEnApi(datosFormulario);
+
+      this.modalService.exito('Requisición guardada correctamente');
+      this.formularioBase.resetearCambios();
+      this.formulario.markAsPristine();
+      
       console.log('Datos guardados:', datosFormulario);
-    } else {
-      this.marcarCamposInvalidos();
-      alert('Complete todos los campos requeridos');
+    } catch (error) {
+      this.errorHandler.manejarError(error, 'Error al guardar la requisición');
     }
+  }
+
+  private guardarEnApi(datosFormulario: any): void {
+    // Descomenta cuando tengas backend
+    // this.api.guardarRequisicion(datosFormulario)
+    //   .subscribe(
+    //     respuesta => {
+    //       this.modalService.exito('Requisición guardada en servidor');
+    //       this.limpiarFormulario();
+    //     },
+    //     error => this.errorHandler.manejarError(error)
+    //   );
   }
 
   private guardarEnStorage(datos: any): void {
@@ -211,10 +313,14 @@ export class RequisicionTransporteComponent implements OnInit {
   }
 
   limpiarFormulario(): void {
-    if (confirm('¿Está seguro de limpiar todo el formulario?')) {
-      this.formulario.reset();
-      this.numeroEntrada = this.generarNumeroEntrada();
-    }
+    this.modalService.confirmar('¿Está seguro de limpiar todo el formulario?').then((confirmado) => {
+      if (confirmado) {
+        this.formularioBase.limpiarFormulario(this.formulario);
+        this.numeroEntrada = this.generarNumeroEntrada();
+        this.storage.eliminar('borrador_requisicion');
+        this.modalService.mostrar('Formulario limpiado', 'success');
+      }
+    });
   }
 
   generarNumeroEntrada(): string {

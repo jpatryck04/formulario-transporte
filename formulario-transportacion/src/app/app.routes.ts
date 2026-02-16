@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CambiosNoGuardadosGuard } from './shared/cambios-no-guardados.guard';
 
 export const routes: Routes = [
   { 
@@ -11,12 +12,14 @@ export const routes: Routes = [
     path: 'requisicion-transporte', 
     loadComponent: () =>
       import('./requisicion-transporte/requisicion-transporte.component')
-        .then(m => m.RequisicionTransporteComponent)
+        .then(m => m.RequisicionTransporteComponent),
+    canDeactivate: [CambiosNoGuardadosGuard]
   },
   { 
     path: 'solicitud-transporte', 
     loadComponent: () =>
       import('./solicitud-transporte/solicitud-transporte.component')
-        .then(m => m.SolicitudTransporteComponent)
+        .then(m => m.SolicitudTransporteComponent),
+    canDeactivate: [CambiosNoGuardadosGuard]
   }
 ];

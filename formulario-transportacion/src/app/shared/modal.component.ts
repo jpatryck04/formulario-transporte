@@ -9,6 +9,9 @@ import { ModalService } from './modal.service';
   template: `
     <div class="modal-overlay" *ngIf="visible" (click)="onClose()">
       <div class="modal-contenedor" (click)="$event.stopPropagation()">
+        <!-- Botón de cerrar X -->
+        <button class="modal-cerrar-btn" (click)="onClose()" aria-label="Cerrar">×</button>
+
         <!-- Logo del ministerio -->
         <div class="modal-header-logo">
           <img src="assets/logo-ministerio.png" alt="Logo" class="modal-logo" onerror="this.style.display='none'">
@@ -77,6 +80,36 @@ import { ModalService } from './modal.service';
       padding: 20px;
       text-align: center;
       animation: slideIn 0.3s ease-out;
+      position: relative;
+    }
+
+    .modal-cerrar-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 32px;
+      cursor: pointer;
+      color: #dc3545;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      border-radius: 50%;
+      padding: 0;
+    }
+
+    .modal-cerrar-btn:hover {
+      background-color: #f8d7da;
+      color: #721c24;
+      transform: scale(1.15);
+    }
+
+    .modal-cerrar-btn:active {
+      transform: scale(0.95);
     }
 
     @keyframes slideIn {
@@ -92,6 +125,7 @@ import { ModalService } from './modal.service';
 
     .modal-header-logo {
       margin-bottom: 15px;
+      margin-top: 10px;
     }
 
     .modal-logo {

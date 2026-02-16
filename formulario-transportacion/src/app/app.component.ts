@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FloatingBackButtonComponent } from './shared/floating-back-button.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FloatingBackButtonComponent],
   template: `
+    <app-floating-back-button></app-floating-back-button>
     <div class="app-container">
       <header class="app-header">
         <h1>Sistema de Requisiciones de Transporte</h1>

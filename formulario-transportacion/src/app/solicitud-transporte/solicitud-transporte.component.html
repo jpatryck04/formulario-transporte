@@ -249,6 +249,7 @@
     [mensaje]="modalState?.mensaje || ''" 
     [tipo]="modalState?.tipo || 'info'" 
     [esConfirmacion]="modalState?.esConfirmacion || false" 
-    (close)="modalService.cerrar()">
+    (close)="modalService.cerrar()"
+    (confirmar)="modalService.cerrar()">
   </app-modal>
 </div>

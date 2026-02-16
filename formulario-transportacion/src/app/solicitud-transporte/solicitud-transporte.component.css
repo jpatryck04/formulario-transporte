@@ -335,6 +335,11 @@
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+  .formulario-container {
+    padding: 15px;
+    margin: 10px auto;
+  }
+
   .fila-datos-3-columnas,
   .fila-datos-2-columnas {
     flex-direction: column;

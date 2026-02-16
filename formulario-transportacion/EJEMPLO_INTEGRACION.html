@@ -1,0 +1,250 @@
+<!-- EJEMPLO DE INTEGRACIÓN DE NUEVOS COMPONENTES EN FORMULARIOS -->
+
+<!-- 1. INDICADOR DE CARGA -->
+<app-indicador-carga 
+  [visible]="cargando$ | async"
+  mensaje="Guardando formulario...">
+</app-indicador-carga>
+
+<!-- 2. ALERTAS PERSONALIZADAS -->
+<app-alerta-validacion 
+  [visible]="mostrarAlerta"
+  tipo="error"
+  titulo="Error de Validación"
+  mensaje="Por favor complete los campos requeridos"
+  [detalles]="erroresValidacion">
+</app-alerta-validacion>
+
+<!-- 3. FORMULARIO CON VALIDACIÓN   -->
+<form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+  
+  <!-- CAMPO CON VALIDACIÓN EN TIEMPO REAL -->
+  <div class="campo-contenedor">
+    <label for="placa">Placa del Vehículo:</label>
+    <input 
+      id="placa"
+      type="text" 
+      formControlName="placa" 
+      placeholder="Ej: ABC-1234"
+      [disabled]="cargando$ | async">
+    
+    <!-- MOSTRAR ERRORES AUTOMÁTICAMENTE -->
+    <app-error-campo [control]="formulario.get('placa')"></app-error-campo>
+  </div>
+
+  <!-- CAMPO DE CANTIDAD CON VALIDACIÓN DE NÚMERO POSITIVO -->
+  <div class="campo-contenedor">
+    <label for="cantidad">Cantidad:</label>
+    <input 
+      id="cantidad"
+      type="number" 
+      formControlName="cantidad" 
+      placeholder="Ej: 5"
+      [disabled]="cargando$ | async">
+    
+    <app-error-campo [control]="formulario.get('cantidad')"></app-error-campo>
+  </div>
+
+  <!-- CAMPO DE FECHA CON VALIDACIÓN DE NO FUTURA -->
+  <div class="campo-contenedor">
+    <label for="fecha">Fecha:</label>
+    <input 
+      id="fecha"
+      type="date" 
+      formControlName="fecha"
+      [disabled]="cargando$ | async">
+    
+    <app-error-campo [control]="formulario.get('fecha')"></app-error-campo>
+  </div>
+
+  <!-- CAMPO DE OBSERVACIONES CON LÍMITE -->
+  <div class="campo-contenedor">
+    <label for="observaciones">
+      Observaciones (máx 500 caracteres):
+    </label>
+    <textarea 
+      id="observaciones"
+      formControlName="observaciones" 
+      placeholder="Digite sus observaciones aquí"
+      maxlength="500"
+      [disabled]="cargando$ | async">
+    </textarea>
+    
+    <app-error-campo [control]="formulario.get('observaciones')"></app-error-campo>
+    
+    <!-- CONTADOR DE CARACTERES -->
+    <small class="contador-caracteres">
+      {{ formulario.get('observaciones')?.value?.length || 0 }}/500
+    </small>
+  </div>
+
+  <!-- BOTONES DE ACCIÓN -->
+  <div class="botones-accion">
+    <!-- GUARDAR (deshabilitado si hay carga o formulario inválido) -->
+    <button 
+      type="submit" 
+      [disabled]="formulario.invalid || (cargando$ | async)"
+      class="btn btn-primary">
+      <span *ngIf="!(cargando$ | async)">Guardar</span>
+      <span *ngIf="cargando$ | async">Guardando...</span>
+    </button>
+
+    <!-- LIMPIAR -->
+    <button 
+      type="button" 
+      (click)="limpiarFormulario()"
+      [disabled]="cargando$ | async"
+      class="btn btn-secondary">
+      Limpiar
+    </button>
+
+    <!-- EXPORTAR COMO JSON -->
+    <button 
+      type="button" 
+      (click)="exportar()"
+      [disabled]="formulario.invalid || (cargando$ | async)"
+      class="btn btn-info">
+      Exportar
+    </button>
+  </div>
+
+  <!-- INDICADOR DE CAMBIOS NO GUARDADOS -->
+  <div *ngIf="cambios$ | async" class="cambios-pendientes">
+    ⚠️ Tiene cambios no guardados que serán perdidos si abandona esta página
+  </div>
+</form>
+
+<!-- ESTILOS EJEMPLO -->
+<style>
+  .campo-contenedor {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .campo-contenedor label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .campo-contenedor input,
+  .campo-contenedor textarea {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  .campo-contenedor input:focus,
+  .campo-contenedor textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+  }
+
+  .campo-contenedor input:disabled,
+  .campo-contenedor textarea:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #999;
+  }
+
+  .contador-caracteres {
+    color: #999;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+
+  .botones-accion {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: #3498db;
+    color: white;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: #2980b9;
+  }
+
+  .btn-secondary {
+    background-color: #95a5a6;
+    color: white;
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background-color: #7f8c8d;
+  }
+
+  .btn-info {
+    background-color: #2ecc71;
+    color: white;
+  }
+
+  .btn-info:hover:not(:disabled) {
+    background-color: #27ae60;
+  }
+
+  .cambios-pendientes {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    border-radius: 4px;
+    color: #856404;
+    font-weight: bold;
+  }
+</style>
+
+<!-- COMPONENTES DE TYPESCRIPT REQUERIDOS -->
+<!--
+En tu componente TypeScript, necesitas:
+
+import { FormularioBaseService } from '../shared/formulario-base.service';
+import { ErrorHandlerService } from '../shared/error-handler.service';
+import { ComponenteConCambios } from '../shared/cambios-no-guardados.guard';
+import { IndicadorCargaComponent } from '../shared/indicador-carga.component';
+import { AlertaValidacionComponent } from '../shared/alerta-validacion.component';
+import { ErrorCampoComponent } from '../shared/error-campo.component';
+
+export class MiFormularioComponent implements ComponenteConCambios {
+  formulario: FormGroup;
+  cargando$ = this.formularioBase.obtenerEstadoCargando();
+  cambios$ = this.formularioBase.obtenerEstadoCambios();
+  mostrarAlerta = false;
+  erroresValidacion: string[] = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private formularioBase: FormularioBaseService,
+    private errorHandler: ErrorHandlerService
+  ) {}
+
+  exportar() {
+    this.formularioBase.exportarJSON(this.formulario.value, 'mi-formulario');
+  }
+
+  tieneCambios(): boolean {
+    return this.formulario.dirty;
+  }
+}
+-->
